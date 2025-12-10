@@ -63,9 +63,23 @@ body {
     border-radius: 6px;
 }
 
-.bottom-nav a.active .icon svg {
+.bottom-nav a {
+    color: #666;
+}
+
+.bottom-nav a svg {
+    fill: #666;
+}
+
+.bottom-nav a.active {
+    background: #000;
+    color: #fff;
+}
+
+.bottom-nav a.active svg {
     fill: #fff;
 }
+
 
 .logo {
     display: flex;
