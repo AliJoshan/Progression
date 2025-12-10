@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <!-- ========== SIDEBAR ========== -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span>Progression</span>
+            </div>
+
+            <nav class="nav">
+                <a class="active"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                            viewBox="0 -960 960 960" width="24px" fill="#000">
+                            <path
+                                d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z" />
+                        </svg></span>Home</a>
+                <a><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                            width="24px" fill="#000">
+                            <path
+                                d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-80q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q66 0 113-47t47-113q0-66-47-113t-113-47q-66 0-113 47t-47 113q0 66 47 113t113 47Zm0-80q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Z" />
+                        </svg></span>Goals</a>
+                <a><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                            width="24px" fill="#000">
+                            <path
+                                d="m438-240 226-226-58-58-169 169-84-84-57 57 142 142ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z" />
+                        </svg></span>Tasks</a>
+                <a><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                            width="24px" fill="#000">
+                            <path
+                                d="m105-399-65-47 200-320 120 140 160-260 120 180 135-214 65 47-198 314-119-179-152 247-121-141-145 233Zm475 159q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29ZM784-80 676-188q-21 14-45.5 21t-50.5 7q-75 0-127.5-52.5T400-340q0-75 52.5-127.5T580-520q75 0 127.5 52.5T760-340q0 26-7 50.5T732-244l108 108-56 56Z" />
+                        </svg></span>Stats</a>
+                <a><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                            width="24px" fill="#000">
+                            <path
+                                d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z" />
+                        </svg></span>Settings</a>
+            </nav>
+        </aside>
+
+        <!-- ========== MAIN CONTENT ========== -->
+        <main class="main">
+
+            <!-- ========== HEADER ========== -->
+            <header class="header">
+                <div>
+                    <h1>Good morning, Alex</h1>
+                    <p class="sub">Tuesday, December 9 — Here's your productivity overview</p>
+                </div>
+
+                <div class="header-buttons">
+                    <!-- Placeholder icons -->
+                    <button class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                            viewBox="0 -960 960 960" width="24px" fill="#000">
+                            <path
+                                d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
+                        </svg></button>
+                    <button class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                            viewBox="0 -960 960 960" width="24px" fill="#000">
+                            <path
+                                d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z" />
+                        </svg></button>
+                    <button class="profile-btn">A</button>
+                </div>
+            </header>
+
+            <!-- ========== STATS CARDS ========== -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-inner">
+                        <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                viewBox="0 -960 960 960" width="24px" fill="#000">
+                                <path
+                                    d="m438-240 226-226-58-58-169 169-84-84-57 57 142 142ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z" />
+                            </svg></div>
+                        <div class="stat-growth">+12%</div>
+                    </div>
+                    <h3>Tasks Completed</h3>
+                    <div class="stat-value">34</div>
+                    <p class="stat-sub">This week</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-inner">
+                        <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                viewBox="0 -960 960 960" width="24px" fill="#000">
+                                <path
+                                    d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-80q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q66 0 113-47t47-113q0-66-47-113t-113-47q-66 0-113 47t-47 113q0 66 47 113t113 47Zm0-80q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Z" />
+                            </svg></div>
+                        <div class="stat-growth">+8%</div>
+                    </div>
+                    <h3>Goals on Track</h3>
+                    <div class="stat-value">4/5</div>
+                    <p class="stat-sub">Monthly goals</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-inner">
+                        <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                viewBox="0 -960 960 960" width="24px" fill="#000">
+                                <path
+                                    d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 27-3 53t-10 51q-14-16-32.5-27T794-418q3-15 4.5-30.5T800-480q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93q51 0 97.5-15t85.5-42q12 17 29.5 30t37.5 20q-51 41-114.5 64T480-80Zm290-160q-21 0-35.5-14.5T720-290q0-21 14.5-35.5T770-340q21 0 35.5 14.5T820-290q0 21-14.5 35.5T770-240Zm-158-52L440-464v-216h80v184l148 148-56 56Z" />
+                            </svg></div>
+                        <div class="stat-growth">+5%</div>
+                    </div>
+                    <h3>Focus Time</h3>
+                    <div class="stat-value">18h</div>
+                    <p class="stat-sub">This week</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-inner">
+                        <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                viewBox="0 -960 960 960" width="24px" fill="#000">
+                                <path
+                                    d="M240-400q0 52 21 98.5t60 81.5q-1-5-1-9v-9q0-32 12-60t35-51l113-111 113 111q23 23 35 51t12 60v9q0 4-1 9 39-35 60-81.5t21-98.5q0-50-18.5-94.5T648-574q-20 13-42 19.5t-45 6.5q-62 0-107.5-41T401-690q-39 33-69 68.5t-50.5 72Q261-513 250.5-475T240-400Zm240 52-57 56q-11 11-17 25t-6 29q0 32 23.5 55t56.5 23q33 0 56.5-23t23.5-55q0-16-6-29.5T537-292l-57-56Zm0-492v132q0 34 23.5 57t57.5 23q18 0 33.5-7.5T622-658l18-22q74 42 117 117t43 163q0 134-93 227T480-80q-134 0-227-93t-93-227q0-129 86.5-245T480-840Z" />
+                            </svg></div>
+                        <div class="stat-growth">+5%</div>
+                    </div>
+                    <h3>Current Streak</h3>
+                    <div class="stat-value">21</div>
+                    <p class="stat-sub">Days in a row</p>
+                </div>
+            </section>
+
+            <!-- ========== MID GRID ========== -->
+            <section class="bottom-grid">
+
+                <!-- WEEKLY PROGRESS -->
+                <div class="weekly-card">
+                    <h2>Weekly Progress</h2>
+                    <p class="small-text">Tasks completed this week</p>
+
+                    <div class="chart-toggle">
+                        <button class="toggle active">Area</button>
+                        <button class="toggle">Bar</button>
+                    </div>
+
+                    <div class="chart-box">
+                        <!-- Replace with chart later -->
+                    </div>
+                </div>
+
+                <!-- GOALS PROGRESS -->
+                <div class="goals-card">
+                    <div class="goals-header">
+                        <h2>Goals Progress</h2>
+                        <span class="active-badge">4 active</span>
+                    </div>
+
+                    <div class="goal-item">
+                        <div class="goal-title">
+                            <div class="goal-icon"></div>
+                            Complete 100 tasks
+                            <span class="goal-end">67/100 tasks</span>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width:67%"></div>
+                        </div>
+
+                        <p class="goal-percent">67%</p>
+                    </div>
+
+                    <div class="goal-item">
+                        <div class="goal-title">
+                            <div class="goal-icon"></div>
+                            30-day streak
+                            <span class="goal-end">21/30 days</span>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width:70%"></div>
+                        </div>
+
+                        <p class="goal-percent">70%</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="tasks-stats-grid">
+
+                <!-- TODAY'S TASKS -->
+                <div class="tasks-card">
+                    <div class="tasks-header">
+                        <h2>Today's Tasks</h2>
+                        <p class="small-text">2 of 5 completed</p>
+                        <button class="add-task-btn">+ Add Task</button>
+                    </div>
+
+                    <div class="tasks-progress">
+                        <p class="progress-label">Progress</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 40%"></div>
+                        </div>
+                        <span class="progress-percent">40%</span>
+                    </div>
+
+                    <div class="tasks-list">
+
+                        <!-- Completed Task -->
+                        <div class="task completed">
+                            <div class="task-left">
+                                <div class="checkbox checked"></div>
+                                <span class="task-text">Morning meditation</span>
+                            </div>
+                            <span class="task-tag">Wellness</span>
+                        </div>
+
+                        <!-- Completed Task -->
+                        <div class="task completed">
+                            <div class="task-left">
+                                <div class="checkbox checked"></div>
+                                <span class="task-text">Review weekly goals</span>
+                            </div>
+                            <span class="task-tag black">Planning</span>
+                        </div>
+
+                        <!-- Incomplete Tasks -->
+                        <div class="task">
+                            <div class="task-left">
+                                <div class="checkbox"></div>
+                                <span class="task-text">Complete project proposal</span>
+                            </div>
+                            <span class="task-tag black">Work</span>
+                        </div>
+
+                        <div class="task">
+                            <div class="task-left">
+                                <div class="checkbox"></div>
+                                <span class="task-text">30 min exercise</span>
+                            </div>
+                            <span class="task-tag">Health</span>
+                        </div>
+
+                        <div class="task">
+                            <div class="task-left">
+                                <div class="checkbox"></div>
+                                <span class="task-text">Read for 20 minutes</span>
+                            </div>
+                            <span class="task-tag">Learning</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- QUICK STATS -->
+                <div class="quick-stats">
+                    <h2>Quick Stats</h2>
+                    <p class="small-text">Your performance metrics</p>
+
+                    <div class="stats-big">
+                        <div class="stats-big-left">
+                            <div class="stat-icon dark"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                    viewBox="0 -960 960 960" width="24px" fill="#000">
+                                    <path
+                                        d="m136-240-56-56 296-298 160 160 208-206H640v-80h240v240h-80v-104L536-320 376-480 136-240Z" />
+                                </svg></div>
+                            <span>Completion Rate</span>
+                        </div>
+                        <span class="stat-value big">87%</span>
+                    </div>
+
+                    <div class="stats-small">
+                        <div class="stat-item">
+                            <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                    viewBox="0 -960 960 960" width="24px" fill="#000">
+                                    <path
+                                        d="m280-80 160-300-320-40 480-460h80L520-580l320 40L360-80h-80Zm222-247 161-154-269-34 63-117-160 154 268 33-63 118Zm-22-153Z" />
+                                </svg></div>
+                            <span>Avg. Tasks/Day</span>
+                            <span class="value">5.2</span>
+                        </div>
+
+                        <div class="stat-item">
+                            <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                    viewBox="0 -960 960 960" width="24px" fill="#000">
+                                    <path
+                                        d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z" />
+                                </svg></div>
+                            <span>Best Day</span>
+                            <span class="value">Friday</span>
+                        </div>
+
+                        <div class="stat-item">
+                            <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                    viewBox="0 -960 960 960" width="24px" fill="#000">
+                                    <path
+                                        d="M280-120v-80h160v-124q-49-11-87.5-41.5T296-442q-75-9-125.5-65.5T120-640v-40q0-33 23.5-56.5T200-760h80v-80h400v80h80q33 0 56.5 23.5T840-680v40q0 76-50.5 132.5T664-442q-18 46-56.5 76.5T520-324v124h160v80H280Zm0-408v-152h-80v40q0 38 22 68.5t58 43.5Zm200 128q50 0 85-35t35-85v-240H360v240q0 50 35 85t85 35Zm200-128q36-13 58-43.5t22-68.5v-40h-80v152Zm-200-52Z" />
+                                </svg></div>
+                            <span>Longest Streak</span>
+                            <span class="value">45 days</span>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+</body>
+
+</html>
