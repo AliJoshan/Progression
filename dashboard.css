@@ -23,12 +23,49 @@ body {
     padding: 32px 20px;
     border-right: 1px solid #eaeaea;
     position: fixed;
-    /* This keeps it attached to the left side */
     top: 0;
     left: 0;
     background: #fff;
+    z-index: 100;
 }
 
+.bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 10px 0;
+    border-top: 1px solid #eaeaea;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 100;
+    box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.bottom-nav a {
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    gap: 5px;
+}
+
+.bottom-nav a.active {
+    background: #000;
+    color: #fff;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.bottom-nav a.active .icon svg {
+    fill: #fff;
+}
 
 .logo {
     display: flex;
@@ -60,6 +97,10 @@ body {
     color: #fff;
 }
 
+.nav a.active .icon svg {
+    fill: #fff;
+}
+
 .nav a:hover {
     background: #f2f2f2;
 }
@@ -71,7 +112,7 @@ body {
     margin-left: 250px;
 }
 
-/* HEADER */
+/* ---------- HEADER ---------- */
 .header {
     display: flex;
     justify-content: space-between;
@@ -120,7 +161,6 @@ body {
     border: 1px solid #ececec;
     border-radius: 18px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    /* Added box-shadow */
 }
 
 .stat-inner {
@@ -139,7 +179,6 @@ body {
     justify-content: center;
     align-items: center;
     padding: 6px;
-    /* To center the icons better */
 }
 
 .stat-growth {
@@ -172,13 +211,12 @@ body {
     gap: 30px;
 }
 
-/* WEEKLY CARD */
+/* ---------- WEEKLY CARD ---------- */
 .weekly-card {
     padding: 28px;
     border: 1px solid #ececec;
     border-radius: 18px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    /* Added box-shadow */
 }
 
 .small-text {
@@ -212,13 +250,12 @@ body {
     border: 1px dashed #ccc;
 }
 
-/* GOALS */
+/* ---------- GOALS ---------- */
 .goals-card {
     padding: 28px;
     border-radius: 18px;
     border: 1px solid #ececec;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    /* Added box-shadow */
 }
 
 .goals-header {
@@ -257,7 +294,7 @@ body {
 
 .progress-bar {
     width: 100%;
-    height: 7px;
+    height: 8px;
     background: #eee;
     border-radius: 6px;
     overflow: hidden;
@@ -266,7 +303,7 @@ body {
 .progress-fill {
     height: 100%;
     background: linear-gradient(90deg, #4caf50, #81c784);
-    /* Added gradient */
+    border-radius: 6px;
     animation: progressBar 2s ease-out forwards;
 }
 
@@ -277,7 +314,6 @@ body {
 
     to {
         width: 67%;
-        /* Example: Adjust based on the actual goal completion */
     }
 }
 
@@ -286,7 +322,7 @@ body {
     margin-top: 6px;
 }
 
-/* GRID */
+/* ---------- TASKS & QUICK STATS ---------- */
 .tasks-stats-grid {
     margin-top: 36px;
     display: grid;
@@ -294,13 +330,19 @@ body {
     gap: 28px;
 }
 
-/* TASKS CARD */
-.tasks-card {
+.tasks-card,
+.quick-stats,
+.weekly-card,
+.goals-card {
+    background: #fff;
+    border-radius: 18px;
     padding: 28px;
     border: 1px solid #eee;
-    border-radius: 18px;
-    background: #fff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.quick-stats .dark svg {
+    fill: #fff;
 }
 
 .tasks-header {
@@ -323,7 +365,6 @@ body {
     cursor: pointer;
 }
 
-/* PROGRESS */
 .tasks-progress {
     margin: 22px 0;
     position: relative;
@@ -334,19 +375,6 @@ body {
     margin-bottom: 6px;
 }
 
-.progress-bar {
-    height: 8px;
-    background: #eee;
-    border-radius: 6px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    background: #000;
-    border-radius: 6px;
-}
-
 .progress-percent {
     position: absolute;
     right: 0;
@@ -354,7 +382,6 @@ body {
     font-size: 14px;
 }
 
-/* TASK LIST */
 .tasks-list {
     display: flex;
     flex-direction: column;
@@ -386,12 +413,12 @@ body {
     height: 18px;
     border-radius: 50%;
     border: 2px solid #ccc;
+    position: relative;
 }
 
 .checkbox.checked {
     background: #000;
     border-color: #000;
-    position: relative;
 }
 
 .checkbox.checked::after {
@@ -411,7 +438,6 @@ body {
     text-decoration: line-through;
 }
 
-/* TAGS */
 .task-tag {
     background: #eee;
     padding: 4px 12px;
@@ -425,15 +451,7 @@ body {
     color: #fff;
 }
 
-/* QUICK STATS */
-.quick-stats {
-    padding: 28px;
-    border: 1px solid #eee;
-    border-radius: 18px;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
+/* ---------- QUICK STATS ---------- */
 .quick-stats h2 {
     font-size: 22px;
     font-weight: 700;
@@ -461,7 +479,6 @@ body {
     font-weight: 700;
 }
 
-/* Small Stat Items */
 .stats-small {
     display: flex;
     flex-direction: column;
@@ -493,21 +510,137 @@ body {
     background: #333;
 }
 
-
-/* ---------- RESPONSIVE BREAKPOINTS ---------- */
-@media (max-width: 768px) {
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 1150px) {
     .stats-grid {
-        grid-template-columns: 1fr 1fr;
-        /* 2 columns on small screens */
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 1080px) {
+
+    .bottom-grid,
+    .tasks-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
     }
 
-    .bottom-grid {
-        grid-template-columns: 1fr;
-        /* Single column for bottom grid */
+    .weekly-card,
+    .goals-card,
+    .tasks-card,
+    .quick-stats {
+        padding: 20px;
+    }
+
+    .chart-box {
+        height: 200px;
+    }
+
+    .tasks-header h2,
+    .quick-stats h2,
+    .weekly-card h2,
+    .goals-card h2 {
+        font-size: 20px;
+    }
+
+    .progress-percent,
+    .goal-percent {
+        font-size: 13px;
+    }
+
+    .task-text {
+        font-size: 14px;
     }
 
     .sidebar {
         width: 200px;
-        /* Make sidebar smaller on mobile */
+        display: none;
+    }
+
+    .bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #fff;
+        padding: 10px 0;
+        border-top: 1px solid #eaeaea;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 100;
+        box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .bottom-nav a {
+        text-align: center;
+        font-size: 12px;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 6px 0;
+        gap: 4px;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .bottom-nav a.active {
+        background: #000;
+        color: #fff;
+    }
+
+    .bottom-nav .icon svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .main {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 700px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 25px;
+    }
+
+    .header>div:first-child {
+        margin-bottom: 15px;
+    }
+
+    .header h1 {
+        font-size: 24px;
+        line-height: 1.2;
+    }
+
+    .sub {
+        font-size: 14px;
+    }
+
+    .header-buttons {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .icon-btn,
+    .profile-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .profile-btn {
+        font-size: 14px;
     }
 }
