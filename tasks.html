@@ -46,19 +46,19 @@
     <!-- STATS -->
     <section class="stats">
         <div class="stat-card">
-            <h2>3</h2>
+            <h2 id="totalTasks">0</h2>
             <p>Total Tasks</p>
         </div>
         <div class="stat-card">
-            <h2>1</h2>
+            <h2 id="completedTasks">0</h2>
             <p>Completed</p>
         </div>
         <div class="stat-card">
-            <h2>3</h2>
+            <h2 id="totalGoals">0</h2>
             <p>Total Goals</p>
         </div>
         <div class="stat-card">
-            <h2>0</h2>
+            <h2 id="completedGoals">0</h2>
             <p>Goals Met</p>
         </div>
     </section>
@@ -87,47 +87,29 @@
     <!-- TASK LIST -->
     <section class="task-container container-width">
         <h3>Your Tasks</h3>
-        <p class="summary">1 of 3 completed</p>
+        <p class="summary">0 of 0 completed</p>
 
         <div class="divider"></div>
 
-        <div class="task-row">
-            <label class="custom-checkbox">
-                <input type="checkbox" checked>
-                <span class="checkmark"></span>
-            </label>
-            <span class="task-text completed">Morning meditation</span>
+        <div class="tasks-list">
+        </div>
+    </section>
 
-            <div class="actions">
-                <button class="edit">✎</button>
-                <button class="delete">🗑</button>
-            </div>
+    <!-- GOALS SECTION -->
+    <section class="goals-container container-width" style="display: none;">
+        <h3>Your Goals</h3>
+        <p class="goal-summary">0 of 0 completed</p>
+
+        <div class="divider"></div>
+
+        <!-- Add Goal -->
+        <div class="add-goal-box">
+            <input type="text" placeholder="Add a new goal...">
+            <button class="add-goal-btn">+ Add Goal</button>
         </div>
 
-        <div class="task-row">
-            <label class="custom-checkbox">
-                <input type="checkbox">
-                <span class="checkmark"></span>
-            </label>
-            <span class="task-text">Complete project proposal</span>
-
-            <div class="actions">
-                <button class="edit">✎</button>
-                <button class="delete">🗑</button>
-            </div>
-        </div>
-
-        <div class="task-row">
-            <label class="custom-checkbox">
-                <input type="checkbox">
-                <span class="checkmark"></span>
-            </label>
-            <span class="task-text">Read for 30 minutes</span>
-
-            <div class="actions">
-                <button class="edit">✎</button>
-                <button class="delete">🗑</button>
-            </div>
+        <!-- Goal List -->
+        <div class="goals-list">
         </div>
     </section>
 
@@ -137,6 +119,7 @@
         View your progress analytics on the <a href="#">Dashboard</a>.
     </div>
 
+    <script src="tasks.js"></script>
 </body>
 
 </html>

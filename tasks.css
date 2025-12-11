@@ -245,6 +245,92 @@ body {
     border-bottom: none;
 }
 
+/* -------- GOALS CONTAINER -------- */
+.goals-container {
+    background: #fff;
+    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0 0 0 1px #eee;
+    margin-top: 35px;
+}
+
+/* Summary */
+.goal-summary {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+/* Add Goal Box */
+.add-goal-box {
+    background: #fff;
+    padding: 22px;
+    border-radius: 18px;
+    box-shadow: 0 0 0 1px #e5e5e5;
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 25px;
+}
+
+.add-goal-box input {
+    flex: 1;
+    padding: 16px 22px;
+    border: 1px solid #ddd;
+    border-radius: 14px;
+    font-size: 16px;
+}
+
+.add-goal-btn {
+    background: #000;
+    color: #fff;
+    padding: 16px 30px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* Goal List */
+.goals-list {
+    margin-top: 20px;
+}
+
+/* Goal Row */
+.goal-row {
+    display: flex;
+    align-items: center;
+    padding: 18px 6px;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.goal-row:last-child {
+    border-bottom: none;
+}
+
+/* Goal Text */
+.goal-text {
+    flex: 1;
+    font-size: 16px;
+}
+
+.goal-text.completed {
+    text-decoration: line-through;
+    color: #777;
+}
+
+/* Goal Actions */
+.goal-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    margin-left: 12px;
+    color: #555;
+}
+
+
 /* -------- CUSTOM CHECKBOX -------- */
 .custom-checkbox {
     position: relative;
