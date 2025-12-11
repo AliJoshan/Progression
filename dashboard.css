@@ -29,6 +29,10 @@ body {
     z-index: 100;
 }
 
+.sidebar nav a {
+    text-decoration: none;
+}
+
 .bottom-nav {
     display: none;
     position: fixed;
@@ -86,6 +90,14 @@ body {
     align-items: center;
     gap: 12px;
     margin-bottom: 40px;
+    text-align: center;
+}
+
+.logo span a {
+    color: #000;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 700;
 }
 
 .nav {
@@ -545,6 +557,10 @@ body {
     .tasks-card,
     .quick-stats {
         padding: 20px;
+    }
+
+    .quick-stats {
+        margin-bottom: 100px;
     }
 
     .chart-box {

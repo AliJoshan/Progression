@@ -1,0 +1,323 @@
+/* -------- GLOBAL -------- */
+body {
+    font-family: "Inter", sans-serif;
+    background: #fff;
+    color: #111;
+    margin: 0;
+}
+
+/* -------- NAVBAR -------- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 40px;
+    border-bottom: 1px solid #eee;
+    font-family: Inter, sans-serif;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-text {
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.logo-text a {
+    color: #000;
+    text-decoration: none;
+}
+
+.nav-center {
+    display: flex;
+    gap: 60px;
+    list-style: none;
+}
+
+.nav-center a {
+    color: #666;
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 500;
+}
+
+.nav-center .active {
+    color: #000;
+    font-weight: 600;
+}
+
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #111;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.back-arrow {
+    font-size: 1rem;
+}
+
+.dash-btn {
+    background: #000;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+.grid-icon {
+    font-size: 1rem;
+}
+
+.grid-icon svg {
+    display: block;
+    vertical-align: middle;
+    height: 1em;
+    width: 1em;
+}
+
+
+/* -------- HEADER -------- */
+.header {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.header h1 {
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.header p {
+    margin-top: 10px;
+    color: #555;
+}
+
+/* -------- STATS -------- */
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.stat-card {
+    background: #fff;
+    padding: 32px 60px;
+    border-radius: 16px;
+    box-shadow: 0 0 0 1px #e5e5e5;
+    text-align: center;
+}
+
+.stat-card h2 {
+    font-size: 36px;
+    margin: 0 0 6px;
+    font-weight: 700;
+}
+
+.stat-card p {
+    margin: 0;
+    color: #666;
+    font-size: 15px;
+}
+
+
+
+/* -------- TABS -------- */
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-top: 45px;
+}
+
+.tab {
+    background: #f5f5f5;
+    padding: 12px 26px;
+    border-radius: 14px;
+    border: none;
+    margin: 0 6px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab.active {
+    background: #000;
+    color: #fff;
+}
+
+
+/* -------- ADD TASK -------- */
+.add-task {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.container-width {
+    width: 85%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* -------- ADD TASK -------- */
+.add-task-box {
+    background: #fff;
+    padding: 22px;
+    border-radius: 18px;
+    box-shadow: 0 0 0 1px #e5e5e5;
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    margin-top: 45px;
+}
+
+.add-task-box input {
+    flex: 1;
+    padding: 16px 22px;
+    border: 1px solid #ddd;
+    border-radius: 14px;
+    font-size: 16px;
+}
+
+.add-task-box .add-btn {
+    background: #000;
+    color: #fff;
+    padding: 16px 30px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+
+/* -------- TASK LIST -------- */
+.task-container {
+    background: #fff;
+    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0 0 0 1px #eee;
+    margin-top: 35px;
+}
+
+.summary {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+    background: #ececec;
+    margin: 15px 0 10px 0;
+}
+
+.task-row {
+    display: flex;
+    align-items: center;
+    padding: 18px 6px;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.task-row:last-child {
+    border-bottom: none;
+}
+
+/* -------- CUSTOM CHECKBOX -------- */
+.custom-checkbox {
+    position: relative;
+    height: 22px;
+    width: 22px;
+    cursor: pointer;
+    margin-right: 16px;
+}
+
+.custom-checkbox input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 22px;
+    width: 22px;
+    border: 2px solid #444;
+    border-radius: 50%;
+}
+
+.custom-checkbox input:checked~.checkmark {
+    background: #000;
+    border-color: #000;
+}
+
+.custom-checkbox input:checked~.checkmark:after {
+    content: "✔";
+    color: #fff;
+    font-size: 14px;
+    position: absolute;
+    top: 2px;
+    left: 4px;
+}
+
+/* -------- TEXT -------- */
+.task-text {
+    flex: 1;
+    font-size: 16px;
+}
+
+.task-text.completed {
+    text-decoration: line-through;
+    color: #777;
+}
+
+/* -------- ACTIONS -------- */
+.actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    margin-left: 12px;
+    color: #555;
+}
+
+/* -------- FOOTER NOTE -------- */
+.footer-note {
+    background: #fafafa;
+    padding: 26px;
+    border-radius: 18px;
+    text-align: center;
+    color: #666;
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+.footer-note a {
+    color: #000;
+    font-weight: 600;
+    text-decoration: none;
+}
