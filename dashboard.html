@@ -38,7 +38,7 @@
                     </span>
                     Goals
                 </a>
-                <a href="#">
+                <a href="tasks.html">
                     <span class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                             fill="currentColor">
@@ -132,12 +132,11 @@
             <!-- ========== HEADER ========== -->
             <header class="header">
                 <div>
-                    <h1>Good morning, Alex</h1>
+                    <h1>Good morning, Ali</h1>
                     <p class="sub">Tuesday, December 9 — Here's your productivity overview</p>
                 </div>
 
                 <div class="header-buttons">
-                    <!-- Placeholder icons -->
                     <button class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
                             viewBox="0 -960 960 960" width="24px" fill="currentColor">
                             <path
@@ -164,7 +163,7 @@
                         <div class="stat-growth">+12%</div>
                     </div>
                     <h3>Tasks Completed</h3>
-                    <div class="stat-value">34</div>
+                    <div class="stat-value">0</div>
                     <p class="stat-sub">This week</p>
                 </div>
 
@@ -178,7 +177,7 @@
                         <div class="stat-growth">+8%</div>
                     </div>
                     <h3>Goals on Track</h3>
-                    <div class="stat-value">4/5</div>
+                    <div class="stat-value">0/0</div>
                     <p class="stat-sub">Monthly goals</p>
                 </div>
 
@@ -192,7 +191,7 @@
                         <div class="stat-growth">+5%</div>
                     </div>
                     <h3>Focus Time</h3>
-                    <div class="stat-value">18h</div>
+                    <div class="stat-value">0h</div>
                     <p class="stat-sub">This week</p>
                 </div>
 
@@ -206,7 +205,7 @@
                         <div class="stat-growth">+5%</div>
                     </div>
                     <h3>Current Streak</h3>
-                    <div class="stat-value">21</div>
+                    <div class="stat-value">0</div>
                     <p class="stat-sub">Days in a row</p>
                 </div>
             </section>
@@ -272,64 +271,19 @@
                 <div class="tasks-card">
                     <div class="tasks-header">
                         <h2>Today's Tasks</h2>
-                        <p class="small-text">2 of 5 completed</p>
-                        <button class="add-task-btn">+ Add Task</button>
+                        <p class="small-text" id="dashSummary">0 of 0 completed</p>
+                        <button class="add-task-btn" id="dashAddTask">+ Add Task</button>
                     </div>
 
                     <div class="tasks-progress">
                         <p class="progress-label">Progress</p>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: 40%"></div>
+                            <div class="progress-fill" id="dashProgressFill"></div>
                         </div>
-                        <span class="progress-percent">40%</span>
+                        <span class="progress-percent" id="dashProgressPercent">0%</span>
                     </div>
 
-                    <div class="tasks-list">
-
-                        <!-- Completed Task -->
-                        <div class="task completed">
-                            <div class="task-left">
-                                <div class="checkbox checked"></div>
-                                <span class="task-text">Morning meditation</span>
-                            </div>
-                            <span class="task-tag">Wellness</span>
-                        </div>
-
-                        <!-- Completed Task -->
-                        <div class="task completed">
-                            <div class="task-left">
-                                <div class="checkbox checked"></div>
-                                <span class="task-text">Review weekly goals</span>
-                            </div>
-                            <span class="task-tag black">Planning</span>
-                        </div>
-
-                        <!-- Incomplete Tasks -->
-                        <div class="task">
-                            <div class="task-left">
-                                <div class="checkbox"></div>
-                                <span class="task-text">Complete project proposal</span>
-                            </div>
-                            <span class="task-tag black">Work</span>
-                        </div>
-
-                        <div class="task">
-                            <div class="task-left">
-                                <div class="checkbox"></div>
-                                <span class="task-text">30 min exercise</span>
-                            </div>
-                            <span class="task-tag">Health</span>
-                        </div>
-
-                        <div class="task">
-                            <div class="task-left">
-                                <div class="checkbox"></div>
-                                <span class="task-text">Read for 20 minutes</span>
-                            </div>
-                            <span class="task-tag">Learning</span>
-                        </div>
-
-                    </div>
+                    <div class="tasks-list" id="dashTaskList"></div>
                 </div>
 
                 <!-- QUICK STATS -->
@@ -387,6 +341,7 @@
         </main>
     </div>
 
+    <script src="dashboard.js"></script>
 </body>
 
 </html>
