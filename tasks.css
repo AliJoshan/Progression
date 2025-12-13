@@ -111,12 +111,93 @@ body {
     color: #555;
 }
 
+/* -------- TIMELINE -------- */
+.timeline {
+    background: #fff;
+    padding: 26px 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 0 1px #eaeaea;
+    margin-top: 50px;
+}
+
+.timeline-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.timeline-view {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f4f4f4;
+    padding: 6px;
+    border-radius: 14px;
+}
+
+.calendar-icon {
+    font-size: 18px;
+    margin-left: 6px;
+}
+
+.view-btn {
+    background: transparent;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    color: #555;
+}
+
+.view-btn.active {
+    background: #000;
+    color: #fff;
+}
+
+.timeline-range {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.arrow-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #333;
+}
+
+.timeline-bottom {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+    font-size: 14px;
+}
+
+.current-week {
+    background: #f1f1f1;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 500;
+}
+
+.week-progress {
+    color: #555;
+}
+
 /* -------- STATS -------- */
 .stats {
     display: flex;
     justify-content: center;
     gap: 40px;
     margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 .stat-card {
