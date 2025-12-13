@@ -244,25 +244,38 @@ function formatMonthYear(date) {
 
 // --- Render ---
 function renderTimeline() {
+    const now = new Date();
 
     if (timelineView === "week") {
         weekView.style.display = "block";
         monthView.style.display = "none";
-        todayBtn.style.display = "none";
 
         dateRangeEl.textContent = formatWeekRange(timelineDate);
         weekProgress.textContent = "0 of 0 tasks completed this week";
 
-    } else {
+        // Show today button only if not in current week
+        const startOfWeek = new Date(timelineDate);
+        startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+        const startOfCurrentWeek = new Date(now);
+        startOfCurrentWeek.setDate(startOfCurrentWeek.getDate() - startOfCurrentWeek.getDay() + 1);
+
+        todayBtn.style.display = startOfWeek.getTime() === startOfCurrentWeek.getTime() ? "none" : "inline-block";
+
+    } else { // month view
         weekView.style.display = "none";
         monthView.style.display = "block";
-        todayBtn.style.display = "inline-block";
 
         dateRangeEl.textContent = formatMonthYear(timelineDate);
         const monthName = timelineDate.toLocaleDateString("en-US", { month: "long" });
         monthProgress.textContent = `0 of 0 tasks completed in ${monthName}`;
+
+        // Show today button only if not in current month
+        todayBtn.style.display = (timelineDate.getMonth() === now.getMonth() && timelineDate.getFullYear() === now.getFullYear())
+            ? "none"
+            : "inline-block";
     }
 }
+
 
 // --- View Switching ---
 timelineViewBtns.forEach(btn => {
