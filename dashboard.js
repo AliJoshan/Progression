@@ -22,6 +22,20 @@ function saveTasks() {
 function renderDashboardTasks() {
     dashList.innerHTML = "";
 
+    if (tasks.length === 0) {
+        dashList.innerHTML = `
+            <p class="empty-state">No tasks added</p>
+        `;
+
+        dashSummary.textContent = "0 of 0 completed";
+        dashProgressFill.style.width = "0%";
+        dashProgressPercent.textContent = "0%";
+
+        statTasksCompleted.textContent = "0";
+        statGoalsOnTrack.textContent = "0/0";
+        return;
+    }
+
     tasks.forEach(task => {
         const row = document.createElement("div");
         row.classList.add("task");
@@ -43,7 +57,7 @@ function renderDashboardTasks() {
 
     dashSummary.textContent = `${completed} of ${total} completed`;
 
-    const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+    const percent = Math.round((completed / total) * 100);
     dashProgressFill.style.width = percent + "%";
     dashProgressPercent.textContent = percent + "%";
 
@@ -59,6 +73,17 @@ function renderDashboardGoals() {
             child.remove();
         }
     });
+
+    if (goals.length === 0) {
+        dashGoalsActive.textContent = "0 active";
+
+        const empty = document.createElement("p");
+        empty.className = "empty-state";
+        empty.textContent = "No goals added";
+
+        container.appendChild(empty);
+        return;
+    }
 
     const activeGoals = goals.filter(g => !g.completed).length;
     dashGoalsActive.textContent = `${activeGoals} active`;

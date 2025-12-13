@@ -339,6 +339,13 @@ body {
     margin-top: 6px;
 }
 
+.empty-state {
+    text-align: center;
+    color: #888;
+    font-size: 0.9rem;
+    margin: 1.5rem 0;
+}
+
 /* ---------- TASKS & QUICK STATS ---------- */
 .tasks-stats-grid {
     margin-top: 36px;
