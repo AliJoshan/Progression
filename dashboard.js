@@ -32,7 +32,6 @@ function renderDashboardTasks() {
         dashProgressPercent.textContent = "0%";
 
         statTasksCompleted.textContent = "0";
-        statGoalsOnTrack.textContent = "0/0";
         return;
     }
 
@@ -74,7 +73,13 @@ function renderDashboardGoals() {
         }
     });
 
-    if (goals.length === 0) {
+    const totalGoals = goals.length;
+    const completedGoals = goals.filter(g => g.completed).length;
+
+    // 🔹 Sync stat card
+    statGoalsOnTrack.textContent = `${completedGoals}/${totalGoals}`;
+
+    if (totalGoals === 0) {
         dashGoalsActive.textContent = "0 active";
 
         const empty = document.createElement("p");
