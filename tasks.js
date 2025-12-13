@@ -20,6 +20,8 @@ const totalTasksEl = document.getElementById("totalTasks");
 const completedTasksEl = document.getElementById("completedTasks");
 const totalGoalsEl = document.getElementById("totalGoals");
 const completedGoalsEl = document.getElementById("completedGoals");
+const emptyState = document.getElementById("emptyState");
+const emptyText = document.getElementById("emptyText");
 
 // ====== SAVE TO STORAGE ======
 function saveTasks() {
@@ -40,24 +42,42 @@ function updateStats() {
 // ====== RENDER TASKS ======
 function renderTasks() {
     tasksList.innerHTML = "";
-    tasks.forEach(task => {
-        const row = document.createElement("div");
-        row.classList.add("task-row");
-        row.dataset.id = task.id;
 
-        row.innerHTML = `
-            <label class="custom-checkbox">
-                <input type="checkbox" ${task.completed ? "checked" : ""}>
-                <span class="checkmark"></span>
-            </label>
-            <span class="task-text ${task.completed ? "completed" : ""}">${task.text}</span>
-            <div class="actions">
-                <button class="edit">✎</button>
-                <button class="delete">🗑</button>
-            </div>
-        `;
-        tasksList.appendChild(row);
-    });
+    if (tasks.length === 0) {
+        emptyState.style.display = "flex";
+        tasksList.style.display = "none";
+
+        emptyText.textContent =
+            timelineView === "week"
+                ? "No tasks for this week. Add your first task above!"
+                : "No tasks for this month. Add your first task above!";
+
+    } else {
+        emptyState.style.display = "none";
+        tasksList.style.display = "block";
+
+        tasks.forEach(task => {
+            const row = document.createElement("div");
+            row.classList.add("task-row");
+            row.dataset.id = task.id;
+
+            row.innerHTML = `
+                <label class="custom-checkbox">
+                    <input type="checkbox" ${task.completed ? "checked" : ""}>
+                    <span class="checkmark"></span>
+                </label>
+                <span class="task-text ${task.completed ? "completed" : ""}">
+                    ${task.text}
+                </span>
+                <div class="actions">
+                    <button class="edit">✎</button>
+                    <button class="delete">🗑</button>
+                </div>
+            `;
+            tasksList.appendChild(row);
+        });
+    }
+
     summary.textContent = `${tasks.filter(t => t.completed).length} of ${tasks.length} completed`;
     updateStats();
 }
@@ -201,6 +221,10 @@ tabs.forEach((tab, index) => {
     });
 });
 
+// --- State ---
+let timelineView = "week";
+let timelineDate = new Date();
+
 renderTasks();
 renderGoals();
 
@@ -218,10 +242,6 @@ const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const weekProgress = document.getElementById("weekProgress");
 const monthProgress = document.getElementById("monthProgress");
-
-// --- State ---
-let timelineView = "week";
-let timelineDate = new Date();
 
 // --- Helpers ---
 function formatWeekRange(date) {
@@ -274,6 +294,7 @@ function renderTimeline() {
             ? "none"
             : "inline-block";
     }
+    renderTasks();
 }
 
 

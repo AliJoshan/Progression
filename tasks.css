@@ -356,6 +356,28 @@ body {
     border-bottom: none;
 }
 
+/* -------- EMPTY STATE -------- */
+.empty-state {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    color: #888;
+}
+
+.empty-icon {
+    font-size: 42px;
+    color: #bbb;
+    margin-bottom: 14px;
+}
+
+.empty-text {
+    font-size: 15px;
+    color: #777;
+}
+
 /* -------- GOALS CONTAINER -------- */
 .goals-container {
     background: #fff;
