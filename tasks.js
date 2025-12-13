@@ -203,3 +203,102 @@ tabs.forEach((tab, index) => {
 
 renderTasks();
 renderGoals();
+
+/* ======================================================
+   TIMELINE VIEW (WEEK / MONTH)
+   ====================================================== */
+
+// --- Elements ---
+const timelineViewBtns = document.querySelectorAll(".view-btn");
+const weekView = document.getElementById("weekView");
+const monthView = document.getElementById("monthView");
+const dateRangeEl = document.getElementById("dateRange");
+const todayBtn = document.getElementById("todayBtn");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const weekProgress = document.getElementById("weekProgress");
+const monthProgress = document.getElementById("monthProgress");
+
+// --- State ---
+let timelineView = "week";
+let timelineDate = new Date();
+
+// --- Helpers ---
+function formatWeekRange(date) {
+    const start = new Date(date);
+    start.setDate(start.getDate() - start.getDay() + 1);
+
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+
+    return `${start.toLocaleDateString("en-US", { month: "short", day: "numeric" })} - 
+            ${end.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`;
+}
+
+function formatMonthYear(date) {
+    return date.toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric"
+    });
+}
+
+// --- Render ---
+function renderTimeline() {
+
+    if (timelineView === "week") {
+        weekView.style.display = "block";
+        monthView.style.display = "none";
+        todayBtn.style.display = "none";
+
+        dateRangeEl.textContent = formatWeekRange(timelineDate);
+        weekProgress.textContent = "0 of 0 tasks completed this week";
+
+    } else {
+        weekView.style.display = "none";
+        monthView.style.display = "block";
+        todayBtn.style.display = "inline-block";
+
+        dateRangeEl.textContent = formatMonthYear(timelineDate);
+        const monthName = timelineDate.toLocaleDateString("en-US", { month: "long" });
+        monthProgress.textContent = `0 of 0 tasks completed in ${monthName}`;
+    }
+}
+
+// --- View Switching ---
+timelineViewBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+
+        timelineViewBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        timelineView = btn.dataset.view;
+        renderTimeline();
+    });
+});
+
+// --- Navigation ---
+prevBtn.addEventListener("click", () => {
+    if (timelineView === "week") {
+        timelineDate.setDate(timelineDate.getDate() - 7);
+    } else {
+        timelineDate.setMonth(timelineDate.getMonth() - 1);
+    }
+    renderTimeline();
+});
+
+nextBtn.addEventListener("click", () => {
+    if (timelineView === "week") {
+        timelineDate.setDate(timelineDate.getDate() + 7);
+    } else {
+        timelineDate.setMonth(timelineDate.getMonth() + 1);
+    }
+    renderTimeline();
+});
+
+todayBtn.addEventListener("click", () => {
+    timelineDate = new Date();
+    renderTimeline();
+});
+
+// --- Init ---
+renderTimeline();

@@ -191,6 +191,36 @@ body {
     color: #555;
 }
 
+.timeline-week,
+.timeline-month {
+    margin-top: 18px;
+}
+
+.month-progress {
+    color: #555;
+    font-size: 14px;
+}
+
+.today-btn {
+    background: #f5f5f5;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.today-btn:hover {
+    background: #ececec;
+}
+
+.today-btn:active {
+    transform: translateY(1px);
+}
+
 /* -------- STATS -------- */
 .stats {
     display: flex;
