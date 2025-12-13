@@ -672,6 +672,69 @@ body {
         margin-top: 35px;
         margin-bottom: 40px;
     }
+
+    .timeline {
+        padding: 18px;
+        border-radius: 16px;
+        margin-top: 35px;
+    }
+
+    .timeline-top {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+    }
+
+    .timeline-view {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .view-btn {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+
+    .timeline-range {
+        justify-content: space-between;
+        width: 100%;
+        gap: 10px;
+        font-size: 14px;
+    }
+
+    .date-range {
+        text-align: center;
+        flex: 1;
+        font-size: 13px;
+        line-height: 1.4;
+    }
+
+    .arrow-btn {
+        font-size: 20px;
+    }
+
+    .today-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    .timeline-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        font-size: 13px;
+    }
+
+    .current-week {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+
+    .week-progress,
+    .month-progress {
+        font-size: 13px;
+    }
 }
 
 @media (max-width: 500px) {
