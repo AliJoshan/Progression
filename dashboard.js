@@ -74,9 +74,8 @@ function renderDashboardGoals() {
     });
 
     const totalGoals = goals.length;
-    const completedGoals = goals.filter(g => g.completed).length;
+    const completedGoals = goals.filter(g => g.current >= g.target).length;
 
-    // 🔹 Sync stat card
     statGoalsOnTrack.textContent = `${completedGoals}/${totalGoals}`;
 
     if (totalGoals === 0) {
@@ -90,12 +89,14 @@ function renderDashboardGoals() {
         return;
     }
 
-    const activeGoals = goals.filter(g => !g.completed).length;
+    const activeGoals = goals.filter(g => g.current < g.target).length;
     dashGoalsActive.textContent = `${activeGoals} active`;
 
     goals.forEach(goal => {
-        const progress = goal.completed ? 100 : 0;
-        const statusText = goal.completed ? "Completed" : "0%";
+        const percent = Math.min(
+            100,
+            Math.round((goal.current / goal.target) * 100)
+        );
 
         const div = document.createElement("div");
         div.classList.add("goal-item");
@@ -104,14 +105,16 @@ function renderDashboardGoals() {
             <div class="goal-title">
                 <div class="goal-icon"></div>
                 ${goal.text}
-                <span class="goal-end">${statusText}</span>
+                <span class="goal-end">
+                    ${goal.current}/${goal.target}
+                </span>
             </div>
 
             <div class="progress-bar">
-                <div class="progress-fill" style="width:${progress}%"></div>
+                <div class="progress-fill" style="width:${percent}%"></div>
             </div>
 
-            <p class="goal-percent">${progress}%</p>
+            <p class="goal-percent">${percent}%</p>
         `;
 
         container.appendChild(div);

@@ -1,6 +1,18 @@
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 let goals = JSON.parse(localStorage.getItem("goals")) || [];
 
+goals = goals.map(goal => {
+    if (typeof goal.current !== "number" || typeof goal.target !== "number") {
+        return {
+            ...goal,
+            current: 0,
+            target: 1
+        };
+    }
+    return goal;
+});
+localStorage.setItem("goals", JSON.stringify(goals));
+
 const addBtn = document.querySelector(".add-btn");
 const addInput = document.querySelector(".add-task-box input");
 const tasksList = document.querySelector(".tasks-list");
@@ -36,7 +48,8 @@ function updateStats() {
     totalTasksEl.textContent = tasks.length;
     completedTasksEl.textContent = tasks.filter(t => t.completed).length;
     totalGoalsEl.textContent = goals.length;
-    completedGoalsEl.textContent = goals.filter(g => g.completed).length;
+    completedGoalsEl.textContent =
+        goals.filter(g => g.current >= g.target).length;
 }
 
 // ====== RENDER TASKS ======
@@ -85,25 +98,43 @@ function renderTasks() {
 // ====== RENDER GOALS ======
 function renderGoals() {
     goalsList.innerHTML = "";
+
     goals.forEach(goal => {
         const row = document.createElement("div");
-        row.classList.add("task-row");
+        row.classList.add("goal-row");
         row.dataset.id = goal.id;
 
+        const percent = Math.min(
+            100,
+            Math.round((goal.current / goal.target) * 100)
+        );
+
         row.innerHTML = `
-            <label class="custom-checkbox">
-                <input type="checkbox" ${goal.completed ? "checked" : ""}>
-                <span class="checkmark"></span>
-            </label>
-            <span class="task-text ${goal.completed ? "completed" : ""}">${goal.text}</span>
-            <div class="actions">
+            <div class="goal-main">
+                <h4 class="goal-title">${goal.text}</h4>
+                <p class="goal-progress-text">
+                    Progress: ${goal.current} / ${goal.target}
+                </p>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width:${percent}%"></div>
+                </div>
+            </div>
+
+            <div class="goal-actions">
+                <span class="goal-percent">${percent}%</span>
+                <button class="increment-btn">+ Increment</button>
                 <button class="edit">✎</button>
                 <button class="delete">🗑</button>
             </div>
         `;
+
         goalsList.appendChild(row);
     });
-    goalSummary.textContent = `${goals.filter(g => g.completed).length} of ${goals.length} completed`;
+
+    const achieved = goals.filter(g => g.current >= g.target).length;
+    goalSummary.textContent = `${achieved} of ${goals.length} achieved`;
+
     updateStats();
 }
 
@@ -118,17 +149,6 @@ addBtn.addEventListener("click", () => {
     renderTasks();
 });
 
-// ====== ADD GOAL ======
-addGoalBtn.addEventListener("click", () => {
-    const text = addGoalInput.value.trim();
-    if (!text) return;
-
-    goals.push({ id: Date.now(), text, completed: false });
-    addGoalInput.value = "";
-    saveGoals();
-    renderGoals();
-});
-
 // ====== ENTER KEY HANDLING ======
 addInput.addEventListener("keydown", e => {
     if (e.key === "Enter") {
@@ -136,12 +156,25 @@ addInput.addEventListener("keydown", e => {
         addBtn.click();
     }
 });
-addGoalInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") {
-        e.preventDefault();
-        addGoalBtn.click();
-    }
+addGoalBtn.addEventListener("click", () => {
+    const text = addGoalInput.value.trim();
+    if (!text) return;
+
+    const target = Number(prompt("Target number (e.g. 5):"));
+    if (!target || target <= 0) return;
+
+    goals.push({
+        id: Date.now(),
+        text,
+        current: 0,
+        target
+    });
+
+    addGoalInput.value = "";
+    saveGoals();
+    renderGoals();
 });
+
 
 // ====== TASK ACTIONS ======
 tasksList.addEventListener("click", e => {
@@ -175,15 +208,18 @@ tasksList.addEventListener("click", e => {
 
 // ====== GOAL ACTIONS ======
 goalsList.addEventListener("click", e => {
-    const row = e.target.closest(".task-row");
+    const row = e.target.closest(".goal-row");
     if (!row) return;
-    const id = Number(row.dataset.id);
 
-    if (e.target.type === "checkbox") {
-        const goal = goals.find(g => g.id === id);
-        goal.completed = e.target.checked;
-        saveGoals();
-        renderGoals();
+    const id = Number(row.dataset.id);
+    const goal = goals.find(g => g.id === id);
+
+    if (e.target.classList.contains("increment-btn")) {
+        if (goal.current < goal.target) {
+            goal.current++;
+            saveGoals();
+            renderGoals();
+        }
     }
 
     if (e.target.classList.contains("delete")) {
@@ -193,7 +229,6 @@ goalsList.addEventListener("click", e => {
     }
 
     if (e.target.classList.contains("edit")) {
-        const goal = goals.find(g => g.id === id);
         const newText = prompt("Edit goal:", goal.text);
         if (newText && newText.trim()) {
             goal.text = newText.trim();
@@ -202,6 +237,7 @@ goalsList.addEventListener("click", e => {
         }
     }
 });
+
 
 // ====== TAB SWITCHING ======
 tabs.forEach((tab, index) => {
@@ -273,7 +309,6 @@ function renderTimeline() {
         dateRangeEl.textContent = formatWeekRange(timelineDate);
         weekProgress.textContent = "0 of 0 tasks completed this week";
 
-        // Show today button only if not in current week
         const startOfWeek = new Date(timelineDate);
         startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
         const startOfCurrentWeek = new Date(now);
@@ -281,7 +316,7 @@ function renderTimeline() {
 
         todayBtn.style.display = startOfWeek.getTime() === startOfCurrentWeek.getTime() ? "none" : "inline-block";
 
-    } else { // month view
+    } else {
         weekView.style.display = "none";
         monthView.style.display = "block";
 
@@ -289,7 +324,6 @@ function renderTimeline() {
         const monthName = timelineDate.toLocaleDateString("en-US", { month: "long" });
         monthProgress.textContent = `0 of 0 tasks completed in ${monthName}`;
 
-        // Show today button only if not in current month
         todayBtn.style.display = (timelineDate.getMonth() === now.getMonth() && timelineDate.getFullYear() === now.getFullYear())
             ? "none"
             : "inline-block";
