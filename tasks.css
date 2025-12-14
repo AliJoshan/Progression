@@ -466,7 +466,7 @@ body {
     height: 100%;
     background: #000;
     border-radius: 10px;
-    transition: width 0.3s ease;
+    transition: width 0.3s ease-in-out;
 }
 
 .goal-actions {

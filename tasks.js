@@ -28,6 +28,9 @@ const addTaskBox = document.querySelector(".add-task-box");
 const taskContainer = document.querySelector(".task-container");
 const goalsContainer = document.querySelector(".goals-container");
 
+const params = new URLSearchParams(window.location.search);
+const initialTab = params.get("tab");
+
 const totalTasksEl = document.getElementById("totalTasks");
 const completedTasksEl = document.getElementById("completedTasks");
 const totalGoalsEl = document.getElementById("totalGoals");
@@ -138,6 +141,28 @@ function renderGoals() {
     updateStats();
 }
 
+function activateTab(index) {
+    tabs.forEach(t => t.classList.remove("active"));
+    tabs[index].classList.add("active");
+
+    if (index === 0) {
+        addTaskBox.style.display = "flex";
+        taskContainer.style.display = "block";
+        goalsContainer.style.display = "none";
+    } else {
+        addTaskBox.style.display = "none";
+        taskContainer.style.display = "none";
+        goalsContainer.style.display = "block";
+    }
+}
+
+// On page load
+if (initialTab === "goals") {
+    activateTab(1);
+} else {
+    activateTab(0);
+}
+
 // ====== ADD TASK ======
 addBtn.addEventListener("click", () => {
     const text = addInput.value.trim();
@@ -160,8 +185,23 @@ addGoalBtn.addEventListener("click", () => {
     const text = addGoalInput.value.trim();
     if (!text) return;
 
-    const target = Number(prompt("Target number (e.g. 5):"));
-    if (!target || target <= 0) return;
+    let target;
+
+    while (true) {
+        const input = prompt("Enter target number (e.g. 5):");
+
+        // User clicked Cancel
+        if (input === null) return;
+
+        target = Number(input);
+
+        // Valid number check
+        if (Number.isInteger(target) && target > 0) {
+            break;
+        }
+
+        alert("Please enter a valid positive number.");
+    }
 
     goals.push({
         id: Date.now(),
@@ -175,6 +215,12 @@ addGoalBtn.addEventListener("click", () => {
     renderGoals();
 });
 
+addGoalInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        addGoalBtn.click();
+    }
+});
 
 // ====== TASK ACTIONS ======
 tasksList.addEventListener("click", e => {
@@ -242,20 +288,10 @@ goalsList.addEventListener("click", e => {
 // ====== TAB SWITCHING ======
 tabs.forEach((tab, index) => {
     tab.addEventListener("click", () => {
-        tabs.forEach(t => t.classList.remove("active"));
-        tab.classList.add("active");
-
-        if (index === 0) {
-            addTaskBox.style.display = "flex";
-            taskContainer.style.display = "block";
-            goalsContainer.style.display = "none";
-        } else {
-            addTaskBox.style.display = "none";
-            taskContainer.style.display = "none";
-            goalsContainer.style.display = "block";
-        }
+        activateTab(index);
     });
 });
+
 
 // --- State ---
 let timelineView = "week";
