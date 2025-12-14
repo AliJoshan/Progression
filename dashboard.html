@@ -83,7 +83,7 @@
                 </span>
                 Home
             </a>
-            <a href="#">
+            <a href="tasks.html?tab=goals">
                 <span class="icon">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                         fill="currentColor">
@@ -93,7 +93,7 @@
                 </span>
                 Goals
             </a>
-            <a href="#">
+            <a href="tasks.html">
                 <span class="icon">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                         fill="currentColor">
@@ -209,6 +209,59 @@
                     <p class="stat-sub">Days in a row</p>
                 </div>
             </section>
+
+            <section class="progress-history container-width">
+                <div class="history-header">
+                    <div class="history-title">
+                        <span class="history-icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                viewBox="0 -960 960 960" width="24px" fill="currentColor">
+                                <path
+                                    d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z" />
+                            </svg></span>
+                        <div>
+                            <h3>Task History</h3>
+                            <p class="history-subtitle">0 of 0 completed</p>
+                        </div>
+                    </div>
+
+                    <div class="history-toggle">
+                        <button class="history-btn active" data-view="week">Week</button>
+                        <button class="history-btn" data-view="month">Month</button>
+                    </div>
+                </div>
+
+                <!-- Chart Placeholder -->
+                <div class="history-chart">
+                    <div class="chart-bar"><span>Mon</span></div>
+                    <div class="chart-bar"><span>Tue</span></div>
+                    <div class="chart-bar"><span>Wed</span></div>
+                    <div class="chart-bar"><span>Thu</span></div>
+                    <div class="chart-bar"><span>Fri</span></div>
+                    <div class="chart-bar"><span>Sat</span></div>
+                    <div class="chart-bar"><span>Sun</span></div>
+                </div>
+
+                <!-- Summary -->
+                <div class="history-summary">
+                    <div class="summary-card">
+                        <h4 id="historyCompleted">0</h4>
+                        <p>Completed</p>
+                    </div>
+                    <div class="summary-card">
+                        <h4 id="historyRemaining">0</h4>
+                        <p>Remaining</p>
+                    </div>
+                    <div class="summary-card">
+                        <h4 id="historyRate">0%</h4>
+                        <p>Rate</p>
+                    </div>
+                </div>
+
+                <div class="history-footer">
+                    <span>📈 Last task completed: <strong>—</strong></span>
+                </div>
+            </section>
+
 
             <!-- ========== MID GRID ========== -->
             <section class="bottom-grid">
