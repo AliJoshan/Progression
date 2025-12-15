@@ -35,6 +35,7 @@ const lastCompletedEl = document.getElementById("lastCompleted");
 const historyCompletedEl = document.getElementById("historyCompleted");
 const historyRemainingEl = document.getElementById("historyRemaining");
 const historyRateEl = document.getElementById("historyRate");
+const historySubtitleEl = document.querySelector(".history-subtitle");
 
 // ========================
 // RENDER DASHBOARD TASKS
@@ -246,6 +247,9 @@ function updateWeeklyChart() {
 
     const totalCompleted = completedPerDay.reduce((a, b) => a + b, 0);
     const totalTasks = totalPerDay.reduce((a, b) => a + b, 0);
+
+    // Update history header label (weekly)
+    historySubtitleEl.textContent = `${totalCompleted} of ${totalTasks} completed`;
 
     historyCompletedEl.textContent = totalCompleted;
     historyRemainingEl.textContent = totalTasks - totalCompleted;
