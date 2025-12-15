@@ -1,6 +1,14 @@
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 let goals = JSON.parse(localStorage.getItem("goals")) || [];
 
+tasks = tasks.map(task => ({
+    ...task,
+    createdAt: task.createdAt || Date.now(),
+    completedAt: task.completed ? (task.completedAt || Date.now()) : null
+}));
+
+saveTasks();
+
 goals = goals.map(goal => {
     if (typeof goal.current !== "number" || typeof goal.target !== "number") {
         return {
@@ -168,7 +176,13 @@ addBtn.addEventListener("click", () => {
     const text = addInput.value.trim();
     if (!text) return;
 
-    tasks.push({ id: Date.now(), text, completed: false });
+    tasks.push({
+        id: Date.now(),
+        text,
+        completed: false,
+        createdAt: Date.now(),
+        completedAt: null
+    });
     addInput.value = "";
     saveTasks();
     renderTasks();
@@ -230,7 +244,16 @@ tasksList.addEventListener("click", e => {
 
     if (e.target.type === "checkbox") {
         const task = tasks.find(t => t.id === id);
-        task.completed = e.target.checked;
+        if (!task) return;
+
+        if (e.target.checked) {
+            task.completed = true;
+            task.completedAt = Date.now();
+        } else {
+            task.completed = false;
+            task.completedAt = null;
+        }
+
         saveTasks();
         renderTasks();
     }
