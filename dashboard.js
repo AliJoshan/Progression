@@ -210,26 +210,52 @@ function updateChart(view = "week") {
     } else {
         totalPerSlot = [0, 0, 0, 0];
         completedPerSlot = [0, 0, 0, 0];
-        labels = ["Week 1", "Week 2", "Week 3", "Week 4"];
 
-        const startOfMonth = new Date(now);
-        startOfMonth.setDate(now.getDate() - 29);
-        startOfMonth.setHours(0, 0, 0, 0);
+        const year = now.getFullYear();
+        const month = now.getMonth();
+
+        const startOfMonth = new Date(year, month, 1);
+        const endOfMonth = new Date(year, month + 1, 0);
+
+        const monthName = startOfMonth.toLocaleString("default", { month: "short" });
+
+        const ranges = [
+            { start: 1, end: 7 },
+            { start: 8, end: 14 },
+            { start: 15, end: 21 },
+            { start: 22, end: endOfMonth.getDate() }
+        ];
+
+        labels = ranges.map(r => `${r.start}–${r.end} ${monthName}`);
 
         tasks.forEach(task => {
             if (!task.createdAt) return;
-            const created = new Date(task.createdAt);
-            if (created < startOfMonth || created > now) return;
 
-            const diffDays = Math.floor((created - startOfMonth) / (1000 * 60 * 60 * 24));
-            const index = Math.min(Math.floor(diffDays / 7), 3);
+            const created = new Date(task.createdAt);
+            if (
+                created.getFullYear() !== year ||
+                created.getMonth() !== month
+            ) return;
+
+            const day = created.getDate();
+
+            const index = ranges.findIndex(r => day >= r.start && day <= r.end);
+            if (index === -1) return;
 
             totalPerSlot[index]++;
+
             if (task.completed && task.completedAt) {
                 const completed = new Date(task.completedAt);
-                if (completed >= startOfMonth && completed <= now) completedPerSlot[index]++;
+                if (
+                    completed.getFullYear() === year &&
+                    completed.getMonth() === month
+                ) {
+                    completedPerSlot[index]++;
+                }
             }
         });
+
+        historySubtitleEl.textContent = `This month (${monthName})`;
     }
 
     chartContainer.innerHTML = "";
