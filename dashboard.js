@@ -4,6 +4,10 @@
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 let goals = JSON.parse(localStorage.getItem("goals")) || [];
 
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
 tasks = tasks.map(task => ({
     ...task,
     createdAt: task.createdAt ?? task.id,
@@ -76,12 +80,25 @@ function renderDashboardTasks() {
 }
 
 // ========================
-// DISABLE TASK TOGGLING (VIEW ONLY)
+// DASHBOARD TASK TOGGLING (LIGHT ACTION)
 // ========================
 dashList.addEventListener("click", e => {
-    if (!e.target.classList.contains("checkbox")) return;
+    const checkbox = e.target.closest(".checkbox");
+    if (!checkbox) return;
 
-    window.location.href = "tasks.html";
+    const row = checkbox.closest(".task");
+    const taskId = row.dataset.id;
+
+    const task = tasks.find(t => t.id == taskId);
+    if (!task) return;
+
+    task.completed = !task.completed;
+    task.completedAt = task.completed ? Date.now() : null;
+
+    saveTasks();
+
+    renderDashboardTasks();
+    updateWeeklyChart();
 });
 
 // ========================
@@ -221,7 +238,10 @@ function updateWeeklyChart() {
             : Math.round((completed / total) * 100);
 
         bar.style.height = percent + "%";
-        bar.title = `${completed}/${total} completed (${percent}%)`;
+        const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+        bar.parentElement.dataset.tooltip =
+            `${dayNames[i]} • ${completed}/${total} completed (${percent}%)`;
     });
 
     const totalCompleted = completedPerDay.reduce((a, b) => a + b, 0);
@@ -233,6 +253,35 @@ function updateWeeklyChart() {
         ? Math.round((totalCompleted / totalTasks) * 100) + "%"
         : "0%";
 }
+
+const tooltip = document.getElementById("chartTooltip");
+const chartBars = document.querySelectorAll(".chart-bar");
+
+chartBars.forEach(bar => {
+    bar.addEventListener("mouseenter", e => {
+        const text = bar.dataset.tooltip;
+        if (!text) return;
+
+        tooltip.textContent = text;
+        requestAnimationFrame(() => {
+            tooltip.classList.add("visible");
+        });
+
+        const rect = bar.getBoundingClientRect();
+        const containerRect = bar.parentElement.getBoundingClientRect();
+
+        tooltip.style.left =
+            rect.left - containerRect.left + rect.width / 2 + "px";
+
+        tooltip.style.top =
+            rect.top - containerRect.top - 8 + "px";
+    });
+
+    bar.addEventListener("mouseleave", () => {
+        tooltip.classList.remove("visible");
+    });
+});
+
 
 
 // ========================

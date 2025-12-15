@@ -255,6 +255,48 @@ body {
             transparent);
 }
 
+.chart-tooltip {
+    position: absolute;
+    padding: 10px 14px;
+    background: #fff;
+    color: #111;
+    font-size: 13px;
+    border-radius: 10px;
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.12),
+        0 2px 6px rgba(0, 0, 0, 0.06);
+
+    pointer-events: none;
+    white-space: nowrap;
+
+    opacity: 0;
+    transform: translate(-50%, -4px) scale(0.96);
+
+    transition:
+        opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+
+    z-index: 20;
+}
+
+.chart-tooltip.visible {
+    opacity: 1;
+    transform: translate(-50%, -14px) scale(1);
+}
+
+.chart-tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px 6px 0 6px;
+    border-style: solid;
+    border-color: #fff transparent transparent transparent;
+}
+
+
 /* Header */
 .history-header {
     display: flex;
@@ -639,6 +681,10 @@ body {
 .task-tag.black {
     background: #000;
     color: #fff;
+}
+
+.task .checkbox {
+    cursor: pointer;
 }
 
 /* ---------- QUICK STATS ---------- */
