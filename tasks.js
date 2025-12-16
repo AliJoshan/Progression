@@ -57,6 +57,24 @@ tasks = tasks.map(task => ({
 
 saveTasks();
 
+function getTaskCreatedAtForTimeline() {
+    const date = new Date(timelineDate);
+
+    if (timelineView === "week") {
+        // Put task at start of selected week (Monday)
+        date.setDate(date.getDate() - ((date.getDay() + 6) % 7));
+        date.setHours(9, 0, 0, 0); // 9 AM (safe, human-like)
+    }
+
+    if (timelineView === "month") {
+        // Put task at start of selected month
+        date.setDate(1);
+        date.setHours(9, 0, 0, 0);
+    }
+
+    return date.getTime();
+}
+
 // ====== UPDATE STATS ======
 function updateStats() {
     totalTasksEl.textContent = tasks.length;
@@ -350,7 +368,8 @@ const monthProgress = document.getElementById("monthProgress");
 // --- Helpers ---
 function formatWeekRange(date) {
     const start = new Date(date);
-    start.setDate(start.getDate() - start.getDay() + 1);
+    start.setDate(start.getDate() - ((start.getDay() + 6) % 7));
+    start.setHours(0, 0, 0, 0);
 
     const end = new Date(start);
     end.setDate(start.getDate() + 6);
@@ -378,9 +397,12 @@ function renderTimeline() {
         weekProgress.textContent = "0 of 0 tasks completed this week";
 
         const startOfWeek = new Date(timelineDate);
-        startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+        startOfWeek.setDate(startOfWeek.getDate() - ((startOfWeek.getDay() + 6) % 7));
+        startOfWeek.setHours(0, 0, 0, 0);
+
         const startOfCurrentWeek = new Date(now);
-        startOfCurrentWeek.setDate(startOfCurrentWeek.getDate() - startOfCurrentWeek.getDay() + 1);
+        startOfCurrentWeek.setDate(startOfCurrentWeek.getDate() - ((startOfCurrentWeek.getDay() + 6) % 7));
+        startOfCurrentWeek.setHours(0, 0, 0, 0);
 
         todayBtn.style.display = startOfWeek.getTime() === startOfCurrentWeek.getTime() ? "none" : "inline-block";
 
@@ -446,7 +468,7 @@ addBtn.addEventListener("click", () => {
         id: Date.now(),
         text,
         completed: false,
-        createdAt: Date.now(),
+        createdAt: getTaskCreatedAtForTimeline(),
         completedAt: null
     });
 
