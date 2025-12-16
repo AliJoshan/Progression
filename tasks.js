@@ -1,14 +1,6 @@
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 let goals = JSON.parse(localStorage.getItem("goals")) || [];
 
-tasks = tasks.map(task => ({
-    ...task,
-    createdAt: task.createdAt || Date.now(),
-    completedAt: task.completed ? (task.completedAt || Date.now()) : null
-}));
-
-saveTasks();
-
 goals = goals.map(goal => {
     if (typeof goal.current !== "number" || typeof goal.target !== "number") {
         return {
@@ -54,6 +46,17 @@ function saveGoals() {
     localStorage.setItem("goals", JSON.stringify(goals));
 }
 
+tasks = tasks.map(task => ({
+    ...task,
+    createdAt: task.createdAt ?? task.id, // fallback to task.id if no createdAt
+    completedAt: task.completed
+        ? (task.completedAt ?? task.createdAt ?? task.id) // fallback properly
+        : null
+}));
+
+
+saveTasks();
+
 // ====== UPDATE STATS ======
 function updateStats() {
     totalTasksEl.textContent = tasks.length;
@@ -67,7 +70,9 @@ function updateStats() {
 function renderTasks() {
     tasksList.innerHTML = "";
 
-    if (tasks.length === 0) {
+    const visibleTasks = tasks.filter(isTaskInTimeline);
+
+    if (visibleTasks.length === 0) {
         emptyState.style.display = "flex";
         tasksList.style.display = "none";
 
@@ -80,7 +85,7 @@ function renderTasks() {
         emptyState.style.display = "none";
         tasksList.style.display = "block";
 
-        tasks.forEach(task => {
+        tasks.filter(isTaskInTimeline).forEach(task => {
             const row = document.createElement("div");
             row.classList.add("task-row");
             row.dataset.id = task.id;
@@ -101,8 +106,7 @@ function renderTasks() {
             tasksList.appendChild(row);
         });
     }
-
-    summary.textContent = `${tasks.filter(t => t.completed).length} of ${tasks.length} completed`;
+    summary.textContent = `${visibleTasks.filter(t => t.completed).length} of ${visibleTasks.length} completed`;
     updateStats();
 }
 
@@ -149,6 +153,27 @@ function renderGoals() {
     updateStats();
 }
 
+function isTaskInTimeline(task) {
+    const date = new Date(task.createdAt);
+
+    if (timelineView === "week") {
+        const start = new Date(timelineDate);
+        start.setDate(start.getDate() - ((start.getDay() + 6) % 7));
+        start.setHours(0, 0, 0, 0);
+
+        const end = new Date(start);
+        end.setDate(start.getDate() + 7);
+
+        return date >= start && date < end;
+    }
+
+    return (
+        date.getFullYear() === timelineDate.getFullYear() &&
+        date.getMonth() === timelineDate.getMonth()
+    );
+}
+
+
 function activateTab(index) {
     tabs.forEach(t => t.classList.remove("active"));
     tabs[index].classList.add("active");
@@ -171,23 +196,6 @@ if (initialTab === "goals") {
     activateTab(0);
 }
 
-// ====== ADD TASK ======
-addBtn.addEventListener("click", () => {
-    const text = addInput.value.trim();
-    if (!text) return;
-
-    tasks.push({
-        id: Date.now(),
-        text,
-        completed: false,
-        createdAt: Date.now(),
-        completedAt: null
-    });
-    addInput.value = "";
-    saveTasks();
-    renderTasks();
-});
-
 // ====== ENTER KEY HANDLING ======
 addInput.addEventListener("keydown", e => {
     if (e.key === "Enter") {
@@ -195,6 +203,7 @@ addInput.addEventListener("keydown", e => {
         addBtn.click();
     }
 });
+
 addGoalBtn.addEventListener("click", () => {
     const text = addGoalInput.value.trim();
     if (!text) return;
@@ -426,6 +435,36 @@ todayBtn.addEventListener("click", () => {
     timelineDate = new Date();
     renderTimeline();
 });
+
+
+
+addBtn.addEventListener("click", () => {
+    const text = addInput.value.trim();
+    if (!text) return;
+
+    tasks.push({
+        id: Date.now(),
+        text,
+        completed: false,
+        createdAt: Date.now(),
+        completedAt: null
+    });
+
+    addInput.value = "";
+    saveTasks();
+    renderTasks();
+});
+
+let lastKnownDate = new Date().toDateString();
+
+setInterval(() => {
+    const now = new Date();
+    if (now.toDateString() !== lastKnownDate) {
+        lastKnownDate = now.toDateString();
+        timelineDate = new Date(); // jump to today
+        renderTimeline();
+    }
+}, 60 * 1000); // check every minute
 
 // --- Init ---
 renderTimeline();

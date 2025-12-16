@@ -219,6 +219,7 @@ function updateChart(view = "week") {
 
         const monthName = startOfMonth.toLocaleString("default", { month: "short" });
 
+        // Define date ranges
         const ranges = [
             { start: 1, end: 7 },
             { start: 8, end: 14 },
@@ -321,6 +322,17 @@ historyBtns.forEach(btn => {
         updateChart(currentView);
     });
 });
+
+let lastKnownDate = new Date().toDateString();
+
+setInterval(() => {
+    const now = new Date();
+    if (now.toDateString() !== lastKnownDate) {
+        lastKnownDate = now.toDateString();
+        renderDashboardTasks();
+        updateChart(currentView);
+    }
+}, 60 * 1000);
 
 // ========================
 // INITIAL RENDER
