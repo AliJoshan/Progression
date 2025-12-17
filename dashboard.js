@@ -100,6 +100,78 @@ function getWeeklyCompletedTasks() {
     }).length;
 }
 
+function getWeeklyTaskCounts() {
+    const counts = Array(7).fill(0);
+    const now = new Date();
+
+    const startOfWeek = new Date(now);
+    const day = now.getDay();
+    const diff = day === 0 ? -6 : 1 - day;
+    startOfWeek.setDate(now.getDate() + diff);
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 7);
+
+    tasks.forEach(task => {
+        if (!task.completedAt) return;
+        const d = new Date(task.completedAt);
+        if (d >= startOfWeek && d < endOfWeek) {
+            const index = (d.getDay() + 6) % 7; // Mon = 0
+            counts[index]++;
+        }
+    });
+
+    return counts;
+}
+
+const ctx = document.getElementById("weeklyProgressChart").getContext("2d");
+let weeklyChart;
+let currentChartType = "line";
+
+function renderWeeklyChart(type = "line") {
+    const data = getWeeklyTaskCounts();
+
+    if (weeklyChart) weeklyChart.destroy();
+
+    weeklyChart = new Chart(ctx, {
+        type,
+        data: {
+            labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            datasets: [{
+                label: "Tasks Completed",
+                data,
+                borderColor: "#000",
+                backgroundColor:
+                    type === "line"
+                        ? "rgba(0,0,0,0.08)"
+                        : "#000",
+                fill: type === "line",
+                tension: 0.45,
+                borderWidth: 2,
+                borderRadius: type === "bar" ? 8 : 0,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: "#eee" },
+                    ticks: { stepSize: 1 }
+                },
+                x: {
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+}
+
 // ========================
 // RENDER DASHBOARD TASKS
 // ========================
@@ -166,6 +238,7 @@ dashList.addEventListener("click", e => {
     renderDashboardTasks();
     updateQuickStats();
     updateChart(currentView);
+    renderWeeklyChart(currentChartType);
 });
 
 // ========================
@@ -239,7 +312,6 @@ dashAddTask.addEventListener("click", () => {
 // UNIFIED CHART FUNCTION
 // ========================
 function updateChart(view = "week") {
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
     const chartContainer = document.querySelector(".history-chart");
 
     let totalPerSlot = [], completedPerSlot = [], labels = [];
@@ -349,6 +421,18 @@ function updateChart(view = "week") {
     historyRemainingEl.textContent = totalTasks - totalCompleted;
     historyRateEl.textContent = totalTasks ? Math.round((totalCompleted / totalTasks) * 100) + "%" : "0%";
 }
+
+const toggleBtns = document.querySelectorAll(".chart-toggle .toggle");
+
+toggleBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        toggleBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        currentChartType = btn.textContent === "Bar" ? "bar" : "line";
+        renderWeeklyChart(currentChartType);
+    });
+});
 
 // ========================
 // HISTORY VIEW TOGGLE
@@ -510,7 +594,8 @@ function updateQuickStats() {
 // ========================
 // INITIAL RENDER
 // ========================
+saveTasks();
 renderDashboardTasks();
-renderDashboardGoals();
 updateQuickStats();
 updateChart(currentView);
+renderWeeklyChart(currentChartType);
