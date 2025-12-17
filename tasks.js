@@ -60,14 +60,17 @@ saveTasks();
 function getTaskCreatedAtForTimeline() {
     const date = new Date(timelineDate);
 
+    if (timelineView === "today") {
+        // Put task on today at 9 AM
+        date.setHours(9, 0, 0, 0);
+    }
+
     if (timelineView === "week") {
-        // Put task at start of selected week (Monday)
         date.setDate(date.getDate() - ((date.getDay() + 6) % 7));
-        date.setHours(9, 0, 0, 0); // 9 AM (safe, human-like)
+        date.setHours(9, 0, 0, 0);
     }
 
     if (timelineView === "month") {
-        // Put task at start of selected month
         date.setDate(1);
         date.setHours(9, 0, 0, 0);
     }
@@ -95,9 +98,11 @@ function renderTasks() {
         tasksList.style.display = "none";
 
         emptyText.textContent =
-            timelineView === "week"
-                ? "No tasks for this week. Add your first task above!"
-                : "No tasks for this month. Add your first task above!";
+            timelineView === "today"
+                ? "No tasks for today. Add your first task above!"
+                : timelineView === "week"
+                    ? "No tasks for this week. Add your first task above!"
+                    : "No tasks for this month. Add your first task above!";
 
     } else {
         emptyState.style.display = "none";
@@ -172,10 +177,19 @@ function renderGoals() {
 }
 
 function isTaskInTimeline(task) {
-    const date = new Date(task.createdAt);
+    const date = new Date(task.forDate ?? task.createdAt);
+    const ref = new Date(timelineDate);
+
+    if (timelineView === "today") {
+        return (
+            date.getFullYear() === ref.getFullYear() &&
+            date.getMonth() === ref.getMonth() &&
+            date.getDate() === ref.getDate()
+        );
+    }
 
     if (timelineView === "week") {
-        const start = new Date(timelineDate);
+        const start = new Date(ref);
         start.setDate(start.getDate() - ((start.getDay() + 6) % 7));
         start.setHours(0, 0, 0, 0);
 
@@ -185,9 +199,10 @@ function isTaskInTimeline(task) {
         return date >= start && date < end;
     }
 
+    // month
     return (
-        date.getFullYear() === timelineDate.getFullYear() &&
-        date.getMonth() === timelineDate.getMonth()
+        date.getFullYear() === ref.getFullYear() &&
+        date.getMonth() === ref.getMonth()
     );
 }
 
@@ -344,7 +359,7 @@ tabs.forEach((tab, index) => {
 
 
 // --- State ---
-let timelineView = "week";
+let timelineView = "today";
 let timelineDate = new Date();
 
 renderTasks();
@@ -389,7 +404,31 @@ function formatMonthYear(date) {
 function renderTimeline() {
     const now = new Date();
 
-    if (timelineView === "week") {
+    if (timelineView === "today") {
+        weekView.style.display = "none";
+        monthView.style.display = "none";
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const checkDate = new Date(timelineDate);
+        checkDate.setHours(0, 0, 0, 0);
+
+        const diff = (checkDate - today) / (1000 * 60 * 60 * 24);
+
+        if (diff === 0) dateRangeEl.textContent = "Today";
+        else if (diff === -1) dateRangeEl.textContent = "Yesterday";
+        else if (diff === 1) dateRangeEl.textContent = "Tomorrow";
+        else dateRangeEl.textContent = checkDate.toLocaleDateString("en-US", {
+            weekday: "long",
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+        });
+
+        todayBtn.style.display = diff === 0 ? "none" : "inline-block";
+    }
+    else if (timelineView === "week") {
         weekView.style.display = "block";
         monthView.style.display = "none";
 
@@ -425,21 +464,23 @@ function renderTimeline() {
 // --- View Switching ---
 timelineViewBtns.forEach(btn => {
     btn.addEventListener("click", () => {
-
         timelineViewBtns.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
 
-        timelineView = btn.dataset.view;
+        timelineView = btn.dataset.view; // now can be 'today'
         renderTimeline();
     });
 });
+
 
 // --- Navigation ---
 prevBtn.addEventListener("click", () => {
     if (timelineView === "week") {
         timelineDate.setDate(timelineDate.getDate() - 7);
-    } else {
+    } else if (timelineView === "month") {
         timelineDate.setMonth(timelineDate.getMonth() - 1);
+    } else if (timelineView === "today") {
+        timelineDate.setDate(timelineDate.getDate() - 1);
     }
     renderTimeline();
 });
@@ -447,8 +488,10 @@ prevBtn.addEventListener("click", () => {
 nextBtn.addEventListener("click", () => {
     if (timelineView === "week") {
         timelineDate.setDate(timelineDate.getDate() + 7);
-    } else {
+    } else if (timelineView === "month") {
         timelineDate.setMonth(timelineDate.getMonth() + 1);
+    } else if (timelineView === "today") {
+        timelineDate.setDate(timelineDate.getDate() + 1);
     }
     renderTimeline();
 });

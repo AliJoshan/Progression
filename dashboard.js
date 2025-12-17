@@ -86,7 +86,7 @@ function startOfLocalDay(date = new Date()) {
 function renderDashboardTasks() {
     dashList.innerHTML = "";
 
-    const todaysTasks = tasks.filter(task => isToday(task.createdAt));
+    const todaysTasks = tasks.filter(task => isToday(task.forDate ?? task.createdAt));
 
     if (todaysTasks.length === 0) {
         dashList.innerHTML = `<p class="empty-state">No tasks for today</p>`;
