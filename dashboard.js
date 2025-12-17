@@ -63,7 +63,6 @@ const historyRateEl = document.getElementById("historyRate");
 const historySubtitleEl = document.querySelector(".history-subtitle");
 
 const tooltip = document.getElementById("chartTooltip");
-const chartBars = document.querySelectorAll(".chart-bar");
 const historyBtns = document.querySelectorAll(".history-btn");
 let currentView = "week";
 
@@ -313,16 +312,22 @@ function updateChart(view = "week") {
         historySubtitleEl.textContent = `This month (${monthName})`;
     }
 
+    const maxCompleted = Math.max(...completedPerSlot, 1);
+
     chartContainer.innerHTML = "";
     totalPerSlot.forEach((total, i) => {
         const completed = completedPerSlot[i] || 0;
-        const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+        const heightPercent = Math.round((completed / maxCompleted) * 100);
+        const completionRate = total === 0 ? 0 : Math.round((completed / total) * 100);
 
         const barDiv = document.createElement("div");
         barDiv.className = "chart-bar";
-        barDiv.dataset.tooltip = `${labels[i]} • ${completed}/${total} completed (${percent}%)`;
+        barDiv.dataset.tooltip = `${labels[i]} • ${completed}/${total} completed (${completionRate}%)`;
 
-        barDiv.innerHTML = `<div class="bar-fill" style="height:${percent}%"></div><span>${labels[i]}</span>`;
+        barDiv.innerHTML = `
+    <div class="bar-fill" style="height:${heightPercent}%"></div>
+    <span>${labels[i]}</span>
+`;
         chartContainer.appendChild(barDiv);
 
         barDiv.addEventListener("mouseenter", () => {
@@ -344,25 +349,6 @@ function updateChart(view = "week") {
     historyRemainingEl.textContent = totalTasks - totalCompleted;
     historyRateEl.textContent = totalTasks ? Math.round((totalCompleted / totalTasks) * 100) + "%" : "0%";
 }
-
-// ========================
-// CHART TOOLTIP EVENTS
-// ========================
-chartBars.forEach(bar => {
-    bar.addEventListener("mouseenter", () => {
-        const text = bar.dataset.tooltip;
-        if (!text) return;
-        tooltip.textContent = text;
-        requestAnimationFrame(() => tooltip.classList.add("visible"));
-
-        const rect = bar.getBoundingClientRect();
-        const containerRect = bar.parentElement.getBoundingClientRect();
-        tooltip.style.left = rect.left - containerRect.left + rect.width / 2 + "px";
-        tooltip.style.top = rect.top - containerRect.top - 8 + "px";
-    });
-
-    bar.addEventListener("mouseleave", () => tooltip.classList.remove("visible"));
-});
 
 // ========================
 // HISTORY VIEW TOGGLE
