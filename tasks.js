@@ -457,28 +457,39 @@ function renderTimeline() {
 
         todayBtn.style.display = startOfWeek.getTime() === startOfCurrentWeek.getTime() ? "none" : "inline-block";
     }
-    else if (timelineView === "month") {
-        weekView.style.display = "none";
-        monthView.style.display = "block";
+    else if (view === "month") {
+        const year = now.getFullYear();
+        const month = now.getMonth();
+        const startOfMonth = new Date(year, month, 1);
+        const endOfMonth = new Date(year, month + 1, 0);
+        const daysInMonth = endOfMonth.getDate();
+        const monthName = startOfMonth.toLocaleString("default", { month: "short" });
 
-        dateRangeEl.textContent = formatMonthYear(timelineDate);
+        const ranges = [];
+        let start = 1;
+        while (start <= daysInMonth) {
+            const end = Math.min(start + 6, daysInMonth);
+            ranges.push({ start, end });
+            start = end + 1;
+        }
 
-        const year = timelineDate.getFullYear();
-        const month = timelineDate.getMonth();
+        totalPerSlot = Array(ranges.length).fill(0);
+        completedPerSlot = Array(ranges.length).fill(0);
+        labels = ranges.map(r => `${r.start}–${r.end} ${monthName}`);
 
-        const tasksThisMonth = tasks.filter(task => {
-            const date = new Date(task.forDate ?? task.createdAt);
-            return date.getFullYear() === year && date.getMonth() === month;
+        tasks.forEach(task => {
+            const refDate = new Date(task.forDate ?? task.createdAt);
+            if (refDate.getFullYear() !== year || refDate.getMonth() !== month) return;
+
+            const day = refDate.getDate();
+            const index = ranges.findIndex(r => day >= r.start && day <= r.end);
+            if (index === -1) return;
+
+            totalPerSlot[index]++;
+            if (task.completed) completedPerSlot[index]++;
         });
 
-        const completedThisMonth = tasksThisMonth.filter(t => t.completed && t.completedAt).length;
-
-        const monthName = timelineDate.toLocaleDateString("en-US", { month: "long" });
-        monthProgress.textContent = `${completedThisMonth} of ${tasksThisMonth.length} tasks completed in ${monthName}`;
-
-        todayBtn.style.display = (timelineDate.getMonth() === new Date().getMonth() &&
-            timelineDate.getFullYear() === new Date().getFullYear())
-            ? "none" : "inline-block";
+        historySubtitleEl.textContent = `This month (${monthName})`;
     }
     else {
         weekView.style.display = "none";

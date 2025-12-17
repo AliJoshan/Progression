@@ -275,19 +275,16 @@ function updateChart(view = "week") {
         labels = ranges.map(r => `${r.start}–${r.end} ${monthName}`);
 
         tasks.forEach(task => {
-            const created = new Date(task.createdAt);
-            if (created.getFullYear() !== year || created.getMonth() !== month) return;
+            const refDate = new Date(task.forDate ?? task.createdAt);
+            if (refDate.getFullYear() !== year || refDate.getMonth() !== month) return;
 
-            const day = created.getDate();
+            const day = refDate.getDate();
             const index = ranges.findIndex(r => day >= r.start && day <= r.end);
             if (index === -1) return;
 
             totalPerSlot[index]++;
-            if (task.completed && task.completedAt) {
-                const completed = new Date(task.completedAt);
-                if (completed.getFullYear() === year && completed.getMonth() === month) {
-                    completedPerSlot[index]++;
-                }
+            if (task.completed) {
+                completedPerSlot[index]++;
             }
         });
 
