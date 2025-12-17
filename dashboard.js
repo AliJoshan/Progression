@@ -230,34 +230,39 @@ function updateChart(view = "week") {
         labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
         const startOfWeek = new Date(now);
-        startOfWeek.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+        const day = now.getDay();
+        const diff = day === 0 ? -6 : 1 - day;
+        startOfWeek.setDate(now.getDate() + diff);
         startOfWeek.setHours(0, 0, 0, 0);
+
         const endOfWeek = new Date(startOfWeek);
         endOfWeek.setDate(startOfWeek.getDate() + 7);
 
         tasks.forEach(task => {
-            if (!task.createdAt) return;
-            const created = new Date(task.createdAt);
-            if (created < startOfWeek || created >= endOfWeek) return;
+            const taskDate = new Date(task.forDate ?? task.createdAt);
+            taskDate.setHours(0, 0, 0, 0);
 
-            const index = (created.getDay() + 6) % 7;
+            if (taskDate < startOfWeek || taskDate >= endOfWeek) return;
+
+            const index = (taskDate.getDay() + 6) % 7;
             totalPerSlot[index]++;
+
             if (task.completed && task.completedAt) {
-                const completed = new Date(task.completedAt);
-                if (completed >= startOfWeek && completed < endOfWeek) completedPerSlot[index]++;
+                const completedDate = new Date(task.completedAt);
+                completedDate.setHours(0, 0, 0, 0);
+                if (completedDate >= startOfWeek && completedDate < endOfWeek) {
+                    completedPerSlot[index]++;
+                }
             }
         });
-
     } else {
         totalPerSlot = [0, 0, 0, 0];
         completedPerSlot = [0, 0, 0, 0];
 
         const year = now.getFullYear();
         const month = now.getMonth();
-
         const startOfMonth = new Date(year, month, 1);
         const endOfMonth = new Date(year, month + 1, 0);
-
         const monthName = startOfMonth.toLocaleString("default", { month: "short" });
 
         const ranges = [
@@ -270,27 +275,17 @@ function updateChart(view = "week") {
         labels = ranges.map(r => `${r.start}–${r.end} ${monthName}`);
 
         tasks.forEach(task => {
-            if (!task.createdAt) return;
-
             const created = new Date(task.createdAt);
-            if (
-                created.getFullYear() !== year ||
-                created.getMonth() !== month
-            ) return;
+            if (created.getFullYear() !== year || created.getMonth() !== month) return;
 
             const day = created.getDate();
-
             const index = ranges.findIndex(r => day >= r.start && day <= r.end);
             if (index === -1) return;
 
             totalPerSlot[index]++;
-
             if (task.completed && task.completedAt) {
                 const completed = new Date(task.completedAt);
-                if (
-                    completed.getFullYear() === year &&
-                    completed.getMonth() === month
-                ) {
+                if (completed.getFullYear() === year && completed.getMonth() === month) {
                     completedPerSlot[index]++;
                 }
             }
@@ -300,7 +295,6 @@ function updateChart(view = "week") {
     }
 
     chartContainer.innerHTML = "";
-
     totalPerSlot.forEach((total, i) => {
         const completed = completedPerSlot[i] || 0;
         const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
