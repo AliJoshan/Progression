@@ -144,6 +144,7 @@ dashList.addEventListener("click", e => {
 
     saveTasks();
     renderDashboardTasks();
+    updateQuickStats();
     updateChart(currentView);
 });
 
@@ -375,13 +376,131 @@ setInterval(() => {
     if (now.toDateString() !== lastKnownDate) {
         lastKnownDate = now.toDateString();
         renderDashboardTasks();
+        updateQuickStats();
         updateChart(currentView);
     }
 }, 60 * 1000);
+
+// ========================
+// QUICK STATS (DYNAMIC)
+// ========================
+function updateQuickStats() {
+    if (!tasks.length) {
+        statCompletionRate.textContent = "0%";
+        statAvgPerDay.textContent = "0";
+        statBestDay.textContent = "—";
+        statLongestStreak.textContent = "0 days";
+        return;
+    }
+
+    // -------- Completion Rate --------
+    const completedCount = tasks.filter(t => t.completed).length;
+    const completionRate = Math.round((completedCount / tasks.length) * 100);
+    statCompletionRate.textContent = `${completionRate}%`;
+
+    // -------- Avg Tasks / Day --------
+    const tasksByDay = {};
+    tasks.forEach(t => {
+        const d = new Date(t.createdAt);
+        const key = d.toISOString().split("T")[0];
+        tasksByDay[key] = (tasksByDay[key] || 0) + 1;
+    });
+
+    const activeDays = Object.keys(tasksByDay).length;
+    const avgPerDay = activeDays
+        ? (tasks.length / activeDays).toFixed(1)
+        : "0";
+
+    statAvgPerDay.textContent = avgPerDay;
+
+    // -------- Best Day --------
+    const dayStats = [
+        { completed: 0, total: 0 }, // Sun
+        { completed: 0, total: 0 }, // Mon
+        { completed: 0, total: 0 }, // Tue
+        { completed: 0, total: 0 }, // Wed
+        { completed: 0, total: 0 }, // Thu
+        { completed: 0, total: 0 }, // Fri
+        { completed: 0, total: 0 }  // Sat
+    ];
+
+    const now = new Date();
+    const startOfWeek = new Date(now);
+    const day = now.getDay();
+    const diff = day === 0 ? -6 : 1 - day;
+    startOfWeek.setDate(now.getDate() + diff);
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 7);
+
+    tasks.forEach(t => {
+        const refDate = new Date(t.forDate ?? t.createdAt);
+        refDate.setHours(0, 0, 0, 0);
+
+        if (refDate < startOfWeek || refDate >= endOfWeek) return;
+
+        const weekday = refDate.getDay();
+        dayStats[weekday].total++;
+
+        if (t.completed) {
+            dayStats[weekday].completed++;
+        }
+    });
+
+    let bestDayIndex = -1;
+
+    dayStats.forEach((stat, index) => {
+        if (stat.completed === 0) return;
+
+        if (
+            bestDayIndex === -1 ||
+            stat.completed > dayStats[bestDayIndex].completed ||
+            (
+                stat.completed === dayStats[bestDayIndex].completed &&
+                stat.total > dayStats[bestDayIndex].total
+            )
+        ) {
+            bestDayIndex = index;
+        }
+    });
+
+    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    statBestDay.textContent =
+        bestDayIndex !== -1 ? dayNames[bestDayIndex] : "—";
+
+    // -------- Longest Streak --------
+    const completedDays = new Set(
+        tasks
+            .filter(t => t.completedAt)
+            .map(t => {
+                const d = new Date(t.completedAt);
+                return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+            })
+    );
+
+    const sortedDays = [...completedDays].sort((a, b) => a - b);
+
+    let longest = 0;
+    let current = 0;
+
+    for (let i = 0; i < sortedDays.length; i++) {
+        if (i === 0 || sortedDays[i] - sortedDays[i - 1] === 86400000) {
+            current++;
+        } else {
+            current = 1;
+        }
+        longest = Math.max(longest, current);
+    }
+
+    statLongestStreak.textContent = `${longest} days`;
+}
 
 // ========================
 // INITIAL RENDER
 // ========================
 renderDashboardTasks();
 renderDashboardGoals();
+updateQuickStats();
 updateChart(currentView);
