@@ -1,5 +1,5 @@
 // ========================
-// DASHBOARD DATA (READ-ONLY)
+// DASHBOARD DATA
 // ========================
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 let goals = JSON.parse(localStorage.getItem("goals")) || [];
@@ -8,13 +8,35 @@ function saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-tasks = tasks.map(task => ({
-    ...task,
-    createdAt: task.createdAt ?? task.id,
-    completedAt: task.completed
-        ? (task.completedAt ?? task.createdAt ?? task.id)
-        : null
-}));
+function normalizeTimestamp(value) {
+    if (!value) return null;
+
+    if (typeof value === "number") return value;
+
+    if (!isNaN(value)) return Number(value);
+
+    const parsed = Date.parse(value);
+    if (!isNaN(parsed)) return parsed;
+
+    return null;
+}
+
+tasks = tasks.map(task => {
+    const createdAt =
+        normalizeTimestamp(task.createdAt) ??
+        normalizeTimestamp(task.id) ??
+        Date.now();
+
+    return {
+        ...task,
+        createdAt,
+        completedAt: task.completed
+            ? normalizeTimestamp(task.completedAt) ?? createdAt
+            : null
+    };
+});
+
+saveTasks();
 
 // ========================
 // DOM ELEMENTS
@@ -42,14 +64,32 @@ const chartBars = document.querySelectorAll(".chart-bar");
 const historyBtns = document.querySelectorAll(".history-btn");
 let currentView = "week";
 
+function isToday(timestamp) {
+    const date = new Date(timestamp);
+    const today = new Date();
+
+    return (
+        date.getFullYear() === today.getFullYear() &&
+        date.getMonth() === today.getMonth() &&
+        date.getDate() === today.getDate()
+    );
+}
+
+function startOfLocalDay(date = new Date()) {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+
 // ========================
 // RENDER DASHBOARD TASKS
 // ========================
 function renderDashboardTasks() {
     dashList.innerHTML = "";
 
-    if (tasks.length === 0) {
-        dashList.innerHTML = `<p class="empty-state">No tasks added</p>`;
+    const todaysTasks = tasks.filter(task => isToday(task.createdAt));
+
+    if (todaysTasks.length === 0) {
+        dashList.innerHTML = `<p class="empty-state">No tasks for today</p>`;
         dashSummary.textContent = "0 of 0 completed";
         dashProgressFill.style.width = "0%";
         dashProgressPercent.textContent = "0%";
@@ -58,7 +98,7 @@ function renderDashboardTasks() {
         return;
     }
 
-    tasks.forEach(task => {
+    todaysTasks.forEach(task => {
         const row = document.createElement("div");
         row.classList.add("task");
         if (task.completed) row.classList.add("completed");
@@ -73,8 +113,8 @@ function renderDashboardTasks() {
         dashList.appendChild(row);
     });
 
-    const completed = tasks.filter(t => t.completed).length;
-    const total = tasks.length;
+    const completed = todaysTasks.filter(t => t.completed).length;
+    const total = todaysTasks.length;
     const percent = Math.round((completed / total) * 100);
 
     dashSummary.textContent = `${completed} of ${total} completed`;
@@ -84,6 +124,7 @@ function renderDashboardTasks() {
 
     updateLastCompleted();
 }
+
 
 // ========================
 // DASHBOARD TASK TOGGLING
@@ -219,7 +260,6 @@ function updateChart(view = "week") {
 
         const monthName = startOfMonth.toLocaleString("default", { month: "short" });
 
-        // Define date ranges
         const ranges = [
             { start: 1, end: 7 },
             { start: 8, end: 14 },
@@ -324,6 +364,20 @@ historyBtns.forEach(btn => {
 });
 
 let lastKnownDate = new Date().toDateString();
+
+let didMigrateTasks = false;
+
+tasks = tasks.map(task => {
+    if (!task.createdAt || isNaN(new Date(task.createdAt))) {
+        return { ...task, createdAt: task.id };
+    }
+    return task;
+});
+
+if (!didMigrateTasks) {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    didMigrateTasks = true;
+}
 
 setInterval(() => {
     const now = new Date();

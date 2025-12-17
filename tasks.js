@@ -468,7 +468,8 @@ addBtn.addEventListener("click", () => {
         id: Date.now(),
         text,
         completed: false,
-        createdAt: getTaskCreatedAtForTimeline(),
+        createdAt: Date.now(),                     // REAL creation time
+        forDate: getTaskCreatedAtForTimeline(),     // TIMELINE day
         completedAt: null
     });
 
