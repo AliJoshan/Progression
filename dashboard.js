@@ -53,6 +53,9 @@ const statGoalsOnTrack = document.getElementById("statGoalsOnTrack");
 const dashGoalsContainer = document.querySelector(".goals-card");
 const dashGoalsActive = document.querySelector(".active-badge");
 
+const statFocusTime = document.getElementById("statFocusTime");
+const statCurrentStreak = document.getElementById("statCurrentStreak");
+
 const lastCompletedEl = document.getElementById("lastCompleted");
 const historyCompletedEl = document.getElementById("historyCompleted");
 const historyRemainingEl = document.getElementById("historyRemaining");
@@ -79,6 +82,24 @@ function startOfLocalDay(date = new Date()) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
 
+function getWeeklyCompletedTasks() {
+    const now = new Date();
+
+    const startOfWeek = new Date(now);
+    const day = now.getDay();
+    const diff = day === 0 ? -6 : 1 - day;
+    startOfWeek.setDate(now.getDate() + diff);
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 7);
+
+    return tasks.filter(t => {
+        if (!t.completedAt) return false;
+        const d = new Date(t.completedAt);
+        return d >= startOfWeek && d < endOfWeek;
+    }).length;
+}
 
 // ========================
 // RENDER DASHBOARD TASKS
@@ -385,6 +406,8 @@ setInterval(() => {
 // QUICK STATS (DYNAMIC)
 // ========================
 function updateQuickStats() {
+    statTasksCompleted.textContent = getWeeklyCompletedTasks();
+    statFocusTime.textContent = "0h";
     if (!tasks.length) {
         statCompletionRate.textContent = "0%";
         statAvgPerDay.textContent = "0";
@@ -495,6 +518,7 @@ function updateQuickStats() {
     }
 
     statLongestStreak.textContent = `${longest} days`;
+    statCurrentStreak.textContent = longest;
 }
 
 // ========================
