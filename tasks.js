@@ -433,19 +433,54 @@ function renderTimeline() {
         monthView.style.display = "none";
 
         dateRangeEl.textContent = formatWeekRange(timelineDate);
-        weekProgress.textContent = "0 of 0 tasks completed this week";
 
         const startOfWeek = new Date(timelineDate);
         startOfWeek.setDate(startOfWeek.getDate() - ((startOfWeek.getDay() + 6) % 7));
         startOfWeek.setHours(0, 0, 0, 0);
 
-        const startOfCurrentWeek = new Date(now);
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 7);
+
+        const tasksThisWeek = tasks.filter(task => {
+            const date = new Date(task.forDate ?? task.createdAt);
+            date.setHours(0, 0, 0, 0);
+            return date >= startOfWeek && date < endOfWeek;
+        });
+
+        const completedThisWeek = tasksThisWeek.filter(t => t.completed && t.completedAt).length;
+
+        weekProgress.textContent = `${completedThisWeek} of ${tasksThisWeek.length} tasks completed this week`;
+
+        const startOfCurrentWeek = new Date();
         startOfCurrentWeek.setDate(startOfCurrentWeek.getDate() - ((startOfCurrentWeek.getDay() + 6) % 7));
         startOfCurrentWeek.setHours(0, 0, 0, 0);
 
         todayBtn.style.display = startOfWeek.getTime() === startOfCurrentWeek.getTime() ? "none" : "inline-block";
+    }
+    else if (timelineView === "month") {
+        weekView.style.display = "none";
+        monthView.style.display = "block";
 
-    } else {
+        dateRangeEl.textContent = formatMonthYear(timelineDate);
+
+        const year = timelineDate.getFullYear();
+        const month = timelineDate.getMonth();
+
+        const tasksThisMonth = tasks.filter(task => {
+            const date = new Date(task.forDate ?? task.createdAt);
+            return date.getFullYear() === year && date.getMonth() === month;
+        });
+
+        const completedThisMonth = tasksThisMonth.filter(t => t.completed && t.completedAt).length;
+
+        const monthName = timelineDate.toLocaleDateString("en-US", { month: "long" });
+        monthProgress.textContent = `${completedThisMonth} of ${tasksThisMonth.length} tasks completed in ${monthName}`;
+
+        todayBtn.style.display = (timelineDate.getMonth() === new Date().getMonth() &&
+            timelineDate.getFullYear() === new Date().getFullYear())
+            ? "none" : "inline-block";
+    }
+    else {
         weekView.style.display = "none";
         monthView.style.display = "block";
 
@@ -467,7 +502,7 @@ timelineViewBtns.forEach(btn => {
         timelineViewBtns.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
 
-        timelineView = btn.dataset.view; // now can be 'today'
+        timelineView = btn.dataset.view;
         renderTimeline();
     });
 });
@@ -511,8 +546,8 @@ addBtn.addEventListener("click", () => {
         id: Date.now(),
         text,
         completed: false,
-        createdAt: Date.now(),                     // REAL creation time
-        forDate: getTaskCreatedAtForTimeline(),     // TIMELINE day
+        createdAt: Date.now(),
+        forDate: getTaskCreatedAtForTimeline(),
         completedAt: null
     });
 
@@ -527,10 +562,10 @@ setInterval(() => {
     const now = new Date();
     if (now.toDateString() !== lastKnownDate) {
         lastKnownDate = now.toDateString();
-        timelineDate = new Date(); // jump to today
+        timelineDate = new Date();
         renderTimeline();
     }
-}, 60 * 1000); // check every minute
+}, 60 * 1000);
 
 // --- Init ---
 renderTimeline();
