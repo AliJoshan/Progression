@@ -1,0 +1,209 @@
+/* =========================
+   Global
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #ffffff;
+    color: #0f0f0f;
+    line-height: 1.6;
+}
+
+/* =========================
+   Top Bar
+========================= */
+
+.top-bar {
+    height: 64px;
+    padding: 0 32px;
+    border-bottom: 1px solid #eaeaea;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #0f0f0f;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.logo-text {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.back-link {
+    font-size: 14px;
+    color: #6b6b6b;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    color: #0f0f0f;
+}
+
+/* =========================
+   Layout
+========================= */
+
+.container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+}
+
+/* =========================
+   Intro
+========================= */
+
+.intro h1 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.intro-text {
+    font-size: 17px;
+    color: #5f5f5f;
+    max-width: 600px;
+}
+
+/* =========================
+   Content Sections
+========================= */
+
+.content {
+    margin-top: 56px;
+}
+
+.content h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.content p {
+    font-size: 15.5px;
+    color: #4a4a4a;
+    max-width: 640px;
+}
+
+/* =========================
+   Lists
+========================= */
+
+.philosophy-list,
+.muted-list {
+    margin-top: 16px;
+    padding-left: 18px;
+}
+
+.philosophy-list li {
+    font-size: 15.5px;
+    color: #3f3f3f;
+    margin-bottom: 10px;
+}
+
+.muted-list li {
+    font-size: 15.5px;
+    color: #7a7a7a;
+    margin-bottom: 10px;
+}
+
+/* =========================
+   Steps
+========================= */
+
+.steps {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.step-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #0f0f0f;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.step-text {
+    font-size: 14.5px;
+    color: #2f2f2f;
+}
+
+/* =========================
+   Creator Card
+========================= */
+
+.creator-card {
+    margin-top: 16px;
+    padding: 20px 22px;
+    background: #f9f9f9;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+}
+
+.creator-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f0f0f;
+    margin-bottom: 6px;
+}
+
+.creator-text {
+    font-size: 15px;
+    color: #4a4a4a;
+    line-height: 1.6;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 640px) {
+    .intro h1 {
+        font-size: 32px;
+    }
+
+    .container {
+        padding-top: 48px;
+    }
+}
