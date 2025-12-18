@@ -117,7 +117,7 @@ function getWeeklyTaskCounts() {
         if (!task.completedAt) return;
         const d = new Date(task.completedAt);
         if (d >= startOfWeek && d < endOfWeek) {
-            const index = (d.getDay() + 6) % 7; // Mon = 0
+            const index = (d.getDay() + 6) % 7;
             counts[index]++;
         }
     });
@@ -478,20 +478,6 @@ historyBtns.forEach(btn => {
 });
 
 let lastKnownDate = new Date().toDateString();
-
-let didMigrateTasks = false;
-
-tasks = tasks.map(task => {
-    if (!task.createdAt || isNaN(new Date(task.createdAt))) {
-        return { ...task, createdAt: task.id };
-    }
-    return task;
-});
-
-if (!didMigrateTasks) {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    didMigrateTasks = true;
-}
 
 setInterval(() => {
     const now = new Date();
