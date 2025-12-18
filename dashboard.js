@@ -312,7 +312,9 @@ function renderDashboardGoals() {
     dashGoalsActive.textContent = `${activeGoals} active`;
 
     goals.forEach(goal => {
-        const percent = Math.min(100, Math.round((goal.current / goal.target) * 100));
+        const percent = goal.target > 0
+            ? Math.min(100, Math.round((goal.current / goal.target) * 100))
+            : 0;
         const div = document.createElement("div");
         div.classList.add("goal-item");
 
@@ -608,6 +610,14 @@ function updateQuickStats() {
     statCurrentStreak.textContent = longest;
 }
 
+window.addEventListener("storage", e => {
+    if (e.key === "goals") {
+        goals = JSON.parse(e.newValue) || [];
+        renderDashboardGoals();
+        updateQuickStats();
+    }
+});
+
 // ========================
 // INITIAL RENDER
 // ========================
@@ -615,6 +625,7 @@ updateDashboardHeader();
 setInterval(updateDashboardHeader, 60 * 1000);
 saveTasks();
 renderDashboardTasks();
+renderDashboardGoals();
 updateQuickStats();
 updateChart(currentView);
 renderWeeklyChart(currentChartType);
