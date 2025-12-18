@@ -125,6 +125,37 @@ function getWeeklyTaskCounts() {
     return counts;
 }
 
+// ========================
+// DASHBOARD HEADER (DATE & GREETING)
+// ========================
+const greetingEl = document.getElementById("dashboardGreeting");
+const dateEl = document.getElementById("dashboardDate");
+
+function updateDashboardHeader() {
+    const now = new Date();
+
+    const hour = now.getHours();
+    let greeting = "Good morning";
+
+    if (hour >= 12 && hour < 18) greeting = "Good afternoon";
+    else if (hour >= 18) greeting = "Good evening";
+
+    greetingEl.textContent = greeting;
+
+    const formattedDate = now.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric"
+    });
+
+    const formattedTime = now.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit"
+    });
+
+    dateEl.textContent = `${formattedDate} — ${formattedTime} • Here's your productivity overview`;
+}
+
 const ctx = document.getElementById("weeklyProgressChart").getContext("2d");
 let weeklyChart;
 let currentChartType = "line";
@@ -594,6 +625,8 @@ function updateQuickStats() {
 // ========================
 // INITIAL RENDER
 // ========================
+updateDashboardHeader();
+setInterval(updateDashboardHeader, 60 * 1000);
 saveTasks();
 renderDashboardTasks();
 updateQuickStats();
