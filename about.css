@@ -198,12 +198,62 @@ body {
    Responsive
 ========================= */
 
-@media (max-width: 640px) {
-    .intro h1 {
-        font-size: 32px;
-    }
+@media (max-width: 700px) {
 
     .container {
-        padding-top: 48px;
+        padding: 48px 16px 80px;
+    }
+
+    .top-bar {
+        padding: 0 16px;
+    }
+
+    .logo-text {
+        font-size: 15px;
+    }
+
+    .back-link {
+        font-size: 13px;
+    }
+
+    .intro h1 {
+        font-size: 32px;
+        line-height: 1.25;
+    }
+
+    .intro-text {
+        font-size: 16px;
+    }
+
+    .content {
+        margin-top: 44px;
+    }
+
+    .content h2 {
+        font-size: 18px;
+    }
+
+    .content p {
+        font-size: 15px;
+    }
+
+    .step {
+        padding: 12px 14px;
+    }
+
+    .step-text {
+        font-size: 14px;
+    }
+
+    .creator-card {
+        padding: 18px;
+    }
+
+    .creator-name {
+        font-size: 15.5px;
+    }
+
+    .creator-text {
+        font-size: 14.5px;
     }
 }
